@@ -46,6 +46,9 @@ function App() {
     //to show the call response
     const [callResp, setCallResp] = useState({});
 
+    //to hold the token
+    const [token, setToken] = useState('');
+
     //snackBar to show status
     const [showSnackBar, setShowSnackBar] = useState(false);
     const [snackBarMessage, setSnackBarMessage] = useState("");
@@ -60,6 +63,29 @@ function App() {
         setSnackBarMessage("");
       }
     
+    const handleGetToken = () => {
+      
+      let req = { 
+        method: 'post', 
+        url: `${process.env.REACT_APP_IHUB_REST_URL}/api/v2/login`, 
+        headers: { 'Accept': '*/*', 'Content-Type': 'application/x-www-form-urlencoded'},
+        data: `username=${process.env.REACT_APP_IHUB_USER}&password=${encodeURIComponent(process.env.REACT_APP_IHUB_PASSWORD)}` 
+      };
+      runRequest(req, (res) => {
+        
+        if (res.status===200 && res.data.authToken) {
+          setToken(res.data.authToken);
+          console.log('iHub token: ' + res.data.authToken);
+        } else {
+          setSnackBarMessage(res.message ?? 'Error getting token from Magellan BI&Reporting. Please check login information.');
+          setSnackBarSeverity('error');
+          setShowSnackBar(true);
+        }
+
+        setAnchorEl(null);
+        
+      });
+    };
 
     // Promise that resolves when the acces_token is refreshed.
     let tokenRefreshPromise = undefined;
@@ -234,7 +260,7 @@ function App() {
     useEffect(
         () => {
         console.log("Start app - no authentication is done yet.");
-        
+        handleGetToken();
         
         // eslint-disable-next-line 
         },[]
@@ -292,7 +318,7 @@ function App() {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClickLogout}>Logout</MenuItem>
+                    <MenuItem onClick={handleGetToken}>Get new token</MenuItem>
                 </Menu>
                 </div>
             </header>}
@@ -300,7 +326,7 @@ function App() {
             {(true) && 
             <div className="page-content">
                       <Box >
-                        <IhubView />
+                        <IhubView runRequest={runRequest} token={token} />
                       </Box>
                     
             </div>}
