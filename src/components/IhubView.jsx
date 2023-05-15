@@ -6,6 +6,9 @@ import { useEffect } from 'react';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 
+//FOR EVENTS
+import { subscribe, unsubscribe } from "./eventScript";
+
 // MUI components
 import { 
   Box,
@@ -33,7 +36,9 @@ export default function IhubView(props) {
   const { runRequest, token } = props;
 
   const [message, setMessage] = useState('');
+  const [eventMessage, setEventMessage] = useState('');
   const [bookmark, setBookmark] = useState('');
+  const [bookmarkValues, setBookmarkValues] = useState([]); //the bookmarks returned by the REST call
   const [parameters, setParameters] = useState([]); //the parameters result from rest
   const [paramValues, setParamValues] = useState([]); //the selected values for parameters
   const [paramList, setParamList] = useState([]); //for the list of values
@@ -116,7 +121,7 @@ export default function IhubView(props) {
 
   const loadReport = () => {
     if (!repPath || !repId) return;
-    let viewer1 = window.actuate.getViewer('ihub-report-content');
+    let viewer1 = null; // window.actuate.getViewer('ihub-report-content');
     if (!viewer1) {
       viewer1 = new window.actuate.Viewer( 'ihub-report-content' );
     }
@@ -200,6 +205,8 @@ export default function IhubView(props) {
     setRepSelected(true);
     setShowSelect(false);
     getReportParameters(tmpRepId);
+    getReportBookmarks(tmpRepId);
+    setEventMessage('');
   }
 
   const getDefautlValue = (item) => {
@@ -274,6 +281,28 @@ export default function IhubView(props) {
 
   }
 
+  const getReportBookmarks = (repId) => {
+    console.log('Get bookmarks for: ' + repId);
+    let req = { 
+      method: 'get', 
+      url: `${process.env.REACT_APP_IHUB_REST_URL}/api/v2/visuals/${repId}/bookmarks`, 
+      headers: { 'AuthToken': `${token}`, 'Accept': '*/*' }
+    };
+    runRequest(req, (res) => {
+      console.log(res);
+      if (res.status===200) {
+        setBookmarkValues(res.data.BookMarks ?? []);
+      } else {
+        setBookmarkValues([]);
+        setMessage('GetBookmarks call failed, please check logs.');
+      }
+    
+
+
+    }, '', []);
+
+  }
+
   const getParamList = (index) => {
     let cascadingGroupName = `${parameters[index].group ? `&cascadingGroupName=${encodeURIComponent(parameters[index].group)}` : ''}`;
     let precedingParamValues = `${parameters[index].cascadingParentName ? `&precedingParamValues=${encodeURIComponent(`{"ParameterValue":[{"Name":"${parameters[index].cascadingParentName}", "Value":"${paramValues[parameters.findIndex((obj) => {return obj.name==parameters[index].cascadingParentName})]}"}]}`)}` : ''}`;
@@ -331,6 +360,12 @@ export default function IhubView(props) {
     
   }
 
+  const handleEvent = (e) => {
+    console.log(e.detail);
+
+    setEventMessage(e.detail);
+  }
+
   // ADD HOOK ALLOWING TO RUN CODE ONCE COMPONENT READY
   useEffect(
     () => {
@@ -338,10 +373,21 @@ export default function IhubView(props) {
       jsInject();
       componentWait();
 
+      console.log('Subscribing to events');
+      subscribe("getMessage", handleEvent);
+
+      //USAGE: from the report we can call an event:
+      //document.dispatchEvent(new CustomEvent('getMessage', { detail: 'ABC' }));
+      //
+      //document.dispatchEvent(new CustomEvent('getMessage', {detail: 'Click on ' + valueSeriesName + ' on category ' + categoryData + ' with value: ' + valueData}));
+
 
       return () => {
         console.log('iHub unloading.');
         jsEject();
+
+        console.log('Unsubscribing to events');
+        unsubscribe("getMessage", handleEvent);
       }
        
     },[]
@@ -422,8 +468,10 @@ export default function IhubView(props) {
                         onChange={(e) => {setBookmark(e.target.value)}} 
                       >
                         <MenuItem key={'none'} value={''}>{'(none)'}</MenuItem>
-                        <MenuItem key={'average'} value={'average'}>{'average'}</MenuItem>
-                        <MenuItem key={'percentage'} value={'percentage'}>{'percentage'}</MenuItem>
+                        {bookmarkValues.map((bookmarkVal, index) => (
+                          <MenuItem key={bookmarkVal.BookMarkValue + '_' + index} value={bookmarkVal.BookMarkValue}>{`${bookmarkVal.BookMarkValue} (${bookmarkVal.ElementType})`}</MenuItem>
+
+                        ))}
                       </Select>
                     </FormControl>
                     {parameters.map((parameter, index) => (
@@ -478,6 +526,16 @@ export default function IhubView(props) {
                         <CloudSyncIcon/>
                       </IconButton>
                     </Stack>
+                    {eventMessage && <Typography 
+                      variant="button" 
+                      display="block" 
+                      gutterBottom 
+                      sx={{
+                        wordWrap: 'break-word',
+                        color: 'orange'
+                        }}>
+                      {eventMessage}
+                    </Typography> }
                   </Stack>}
                 </Box>
                 <Box key={'report panel'} 

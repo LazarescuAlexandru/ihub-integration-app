@@ -1,0 +1,1815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.7.0.v201707031807</property>
+    <property name="units">in</property>
+    <method name="beforeFactory"><![CDATA[importPackage(Packages.org.eclipse.birt.report.model.api);
+importPackage(Packages.org.eclipse.birt.report.model.api.elements);
+
+var th = reportContext.getDesignHandle().findElement("mytable");
+if (th) {
+	var ph = th.getPropertyHandle(TableHandle.FILTER_PROP);
+	
+	if (ph) {
+		ph.getContents();
+	
+		var firstFilter = true;
+		iterator = ph.iterator();
+		while (iterator.hasNext()) {
+			var filterConditionHandle = iterator.next();
+
+			var expr = new Packages.java.lang.String(filterConditionHandle.getExpr());
+			if (expr.startsWith("row[") &amp;&amp; expr.endsWith("]"))
+				expr = stripQuotes(expr.substring(4, expr.length() - 1));
+			else if (expr.startsWith("[") &amp;&amp; expr.endsWith("]"))
+				expr = stripQuotes(expr.substring(1, expr.length() -1));
+				
+			var value1 = "";
+			var value2 = "";
+			
+			var value1List = filterConditionHandle.getValue1ExpressionList().getListValue();
+			if (value1List != null) {
+			for (var i = 0; i < value1List.size(); i++) {
+				value1 += stripQuotes(value1List.get(i).getExpression());
+				if (i < value1List.size() - 1)
+					value1 += ", ";
+			}
+			
+			if (filterConditionHandle.getValue2() != null)
+				value2 = " and " + stripQuotes(filterConditionHandle.getValue2());
+			
+			if (!firstFilter)
+				vars["filterStr"] += "\r";
+				
+			vars["filterStr"] += expr + " " + filterConditionHandle.getOperator() + " " + value1 + value2;
+			
+			firstFilter = false;
+			}
+		}
+	}
+}
+
+function stripQuotes(val) {
+	val = new Packages.java.lang.String(val);
+	if (val.startsWith("\"") &amp;&amp; val.endsWith("\""))
+		return val.substring(1, val.length() - 1);
+	else
+		return val;
+		
+}
+]]></method>
+    <property name="theme">ThemesReportItems31.Clean Blue</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">auto layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">/ThemesReportItems31.rptlibrary</property>
+            <property name="namespace">ThemesReportItems31</property>
+        </structure>
+    </list-property>
+    <method name="onContentUpdate"><![CDATA[// resize the charts on window resize
+//var viewer = this.getViewer();
+
+//window.onresize = function(){viewer.submit();};
+
+
+// Get the Viewer's current UI Options
+var uiOptions = this.getViewer().getUIOptions();
+
+// Remove ability for user to change interactivity options
+uiOptions.enableEditReport(false);
+
+// Set the modified UI Options back into the Viewer
+this.getViewer().setUIOptions(uiOptions);
+
+// If Interactivity is not enabled, enable it
+if (!this.getViewer().isInteractive())
+	this.getViewer().enableIV();]]></method>
+    <data-sources>
+        <data-mart-data-source name="Repository data object" id="17">
+            <property name="datamartURL">Data Objects/Repository</property>
+            <property name="accessType">latest</property>
+        </data-mart-data-source>
+    </data-sources>
+    <data-sets>
+        <data-mart-data-set name="Table report" id="18">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">ACTION</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Task</text-property>
+                    <text-property name="heading">ACTION</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">ACTION_USER</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">User</text-property>
+                    <text-property name="heading">ACTION_USER</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">PROCESSING_CENTRE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Processing centre</text-property>
+                    <text-property name="heading">PROCESSING_CENTRE</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">DURATION_MINUTES</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Duration (minutes)</text-property>
+                    <text-property name="heading">DURATION_MINUTES</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">START_DATE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Start Date</text-property>
+                    <text-property name="heading">START_DATE</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">END_DATE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">End Date</text-property>
+                    <text-property name="heading">END_DATE</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">DESCRIPTION</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Description</text-property>
+                    <text-property name="heading">DESCRIPTION</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">R_OBJECT_ID2</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Object ID</text-property>
+                    <text-property name="heading">R_OBJECT_ID</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">ACTION</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">ACTION_USER</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">PROCESSING_CENTRE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">DURATION_MINUTES</property>
+                        <property name="dataType">float</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">START_DATE</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">END_DATE</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">DESCRIPTION</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">R_OBJECT_ID2</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Repository data object</property>
+            <property name="dataObject">Tables structure</property>
+            <list-property name="selectedColumns">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">ACTION</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">ACTION_USER</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">PROCESSING_CENTRE</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">DURATION_MINUTES</property>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">START_DATE</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">END_DATE</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">DESCRIPTION</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">R_OBJECT_ID2</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+        </data-mart-data-set>
+        <data-mart-data-set name="Duration per task" id="66">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">MIN_DUR</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Minimum duration</text-property>
+                    <text-property name="heading">MIN_DUR</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <structure name="valueFormat">
+                        <property name="category">Custom</property>
+                        <property name="pattern">#0.00</property>
+                    </structure>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">MAX_DUR</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Maximum duration</text-property>
+                    <text-property name="heading">MAX_DUR</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <structure name="valueFormat">
+                        <property name="category">Custom</property>
+                        <property name="pattern">#0.00</property>
+                    </structure>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">AVG_DUR</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Average duration</text-property>
+                    <text-property name="heading">AVG_DUR</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <structure name="valueFormat">
+                        <property name="category">Custom</property>
+                        <property name="pattern">#0.00</property>
+                    </structure>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">ACTION1</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Task</text-property>
+                    <text-property name="heading">ACTION</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">MIN_DUR</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">MAX_DUR</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">AVG_DUR</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">ACTION1</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Repository data object</property>
+            <property name="dataObject">Dur per task</property>
+            <list-property name="selectedColumns">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">MIN_DUR</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">MAX_DUR</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">AVG_DUR</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">ACTION1</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+        </data-mart-data-set>
+        <data-mart-data-set name="Duration per day" id="70">
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">MIN_DUR1</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Minimum duration</text-property>
+                    <text-property name="heading">MIN_DUR</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <structure name="valueFormat">
+                        <property name="category">Custom</property>
+                        <property name="pattern">#0.00</property>
+                    </structure>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">MAX_DUR1</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Maximum duration</text-property>
+                    <text-property name="heading">MAX_DUR</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <structure name="valueFormat">
+                        <property name="category">Custom</property>
+                        <property name="pattern">#0.00</property>
+                    </structure>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">AVG_DUR1</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">Average duration</text-property>
+                    <text-property name="heading">AVG_DUR</text-property>
+                    <property name="horizontalAlign">right</property>
+                    <structure name="valueFormat">
+                        <property name="category">Custom</property>
+                        <property name="pattern">#0.00</property>
+                    </structure>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+                <structure>
+                    <property name="columnName">DT_REPORT</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Date report</text-property>
+                    <text-property name="heading">DT_REPORT</text-property>
+                    <property name="horizontalAlign">left</property>
+                    <property name="indexColumn">false</property>
+                    <property name="compressed">false</property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">MIN_DUR1</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">MAX_DUR1</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">AVG_DUR1</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">DT_REPORT</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Repository data object</property>
+            <property name="dataObject">Dur per day</property>
+            <list-property name="selectedColumns">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">MIN_DUR1</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">MAX_DUR1</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">AVG_DUR1</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">DT_REPORT</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+            </list-property>
+        </data-mart-data-set>
+    </data-sets>
+    <styles>
+        <style name="crosstab" id="76">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab-cell" id="77">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="report" id="78">
+            <property name="fontFamily">sans-serif</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">auto</property>
+            <property name="headerHeight">0in</property>
+            <property name="footerHeight">0in</property>
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="4">
+            <property name="height">300px</property>
+            <property name="width">100%</property>
+            <column id="5">
+                <property name="width">2.65625in</property>
+            </column>
+            <column id="6">
+                <property name="width">2.65625in</property>
+            </column>
+            <column id="7"/>
+            <row id="8">
+                <property name="borderBottomStyle">none</property>
+                <property name="borderLeftStyle">none</property>
+                <property name="borderRightStyle">none</property>
+                <property name="borderTopStyle">none</property>
+                <property name="height">300pt</property>
+                <cell id="9">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <property name="paddingTop">0pt</property>
+                    <property name="paddingLeft">0pt</property>
+                    <property name="paddingBottom">0pt</property>
+                    <property name="paddingRight">0pt</property>
+                    <extended-item extensionName="Chart" name="test" id="67">
+                        <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithAxes version="2.6.1" type="Bar Chart" subType="Side-by-side" dimension="0">
+  <block>
+   <children _type="TitleBlock" visible="true">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <triggers condition="2">
+     <action type="3">
+      <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;var chart = viewer.getCurrentPageContent().getChartByBookmark(&quot;dateReport&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;&#13;&#10;table.clearFilters(&quot;ACTION&quot;);&#13;&#10;chart.clearFilters(&quot;ACTION&quot;);&#13;&#10;chart.submit();&#13;&#10;table.submit();"/>
+     </action>
+    </triggers>
+    <cursor type="2"/>
+    <label>
+     <caption value="Duration per task">
+      <font rotation="0.0"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" anchor="4" orientation="0" position="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <triggers condition="2">
+     <action type="2">
+      <value _type="SeriesValue" name=""/>
+     </action>
+    </triggers>
+    <cursor type="2"/>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <text>
+     <font strikethrough="false"/>
+    </text>
+    <separator visible="false">
+     <color _nil="1"/>
+    </separator>
+    <title visible="false">
+     <caption value=""/>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,211.5,130.0"/>
+   <outline>
+    <color _nil="1"/>
+   </outline>
+   <cursor type="0"/>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.series.shadow" value="true"/>
+  <extendedProperties name="jschart.client.script" value="/**&#13;&#10; * Called before chart instance is rendered.&#13;&#10; *&#13;&#10; * @param options&#13;&#10; *            chart options&#13;&#10; * @param  chart&#13;&#10; *             chart instance&#13;&#10; */&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;    //alert(&quot;rendered&quot;);&#13;&#10;    var newWidthStr = parent.document.getElementById(&quot;container&quot;).style.width;&#13;&#10;    var newHeightStr = parent.document.getElementById(&quot;container&quot;).style.height;&#13;&#10;&#13;&#10;    //newHeightStr= (parseInt(newHeightStr.substring(0, newHeightStr.indexOf(&quot;px&quot;))) - 100).toString() + &quot;px&quot;;  &#13;&#10;    newWidthStr = ((parseInt(newWidthStr.substring(0, newWidthStr.indexOf(&quot;px&quot;)))/3) - 50).toString() + &quot;px&quot;;&#13;&#10;&#13;&#10;    parent.document.getElementById(options.chart.renderTo).style.width = newWidthStr;&#13;&#10;    //parent.document.getElementById(options.chart.renderTo).style.height = newHeightStr;&#13;&#10;    parent.document.getElementById(&quot;container_actionReport&quot;).style.width = newWidthStr;&#13;&#10;&#13;&#10;},"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="&#039;A&#039;,&#039;B&#039;,&#039;C&#039;,&#039;D&#039;,&#039;E&#039;"/>
+   <orthogonalSampleData dataSetRepresentation="5,4,12" seriesDefinitionIndex="0"/>
+   <orthogonalSampleData dataSetRepresentation="10.0,8.0,24.0" seriesDefinitionIndex="1"/>
+   <orthogonalSampleData dataSetRepresentation="15.0,12.0,36.0" seriesDefinitionIndex="2"/>
+   <ancillarySampleData dataSetRepresentation="Series 1"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <axes type="2">
+   <title>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </title>
+   <associatedAxes primaryAxis="true">
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+    <seriesDefinitions zOrder="1">
+     <query definition="">
+      <grouping groupType="0"/>
+     </query>
+     <series _type="BarSeries" seriesIdentifier="Min" labelPosition="4" stacked="false" riser="0">
+      <label visible="true">
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;MIN_DUR&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;var chart = viewer.getCurrentPageContent().getChartByBookmark(&quot;dateReport&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;ACTION&quot;,&quot;eq&quot;,categoryData));&#13;&#10;chart.setFilters(new actuate.data.Filter(&quot;ACTION&quot;,&quot;eq&quot;,categoryData));&#13;&#10;&#13;&#10;chart.submit();&#13;&#10;table.submit();"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+     </series>
+    </seriesDefinitions>
+    <seriesDefinitions zOrder="2">
+     <query definition="">
+      <grouping groupType="0"/>
+     </query>
+     <series _type="LineSeries" seriesIdentifier="Average" stacked="false" translucent="true">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;AVG_DUR&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;var chart = viewer.getCurrentPageContent().getChartByBookmark(&quot;dateReport&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;ACTION&quot;,&quot;eq&quot;,categoryData));&#13;&#10;chart.setFilters(new actuate.data.Filter(&quot;ACTION&quot;,&quot;eq&quot;,categoryData));&#13;&#10;&#13;&#10;chart.submit();&#13;&#10;table.submit();"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <markers>
+       <outline/>
+      </markers>
+      <lineAttributes>
+       <color _nil="1"/>
+      </lineAttributes>
+     </series>
+    </seriesDefinitions>
+    <seriesDefinitions>
+     <query definition="">
+      <grouping groupType="0"/>
+     </query>
+     <series _type="BarSeries" seriesIdentifier="Max" labelPosition="4" stacked="false" riser="0">
+      <label visible="true">
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;MAX_DUR&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;var chart = viewer.getCurrentPageContent().getChartByBookmark(&quot;dateReport&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;ACTION&quot;,&quot;eq&quot;,categoryData));&#13;&#10;chart.setFilters(new actuate.data.Filter(&quot;ACTION&quot;,&quot;eq&quot;,categoryData));&#13;&#10;&#13;&#10;chart.submit();&#13;&#10;table.submit();&#13;&#10;&#13;&#10;debugger;"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+     </series>
+    </seriesDefinitions>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <majorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </majorGrid>
+    <minorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </minorGrid>
+    <origin>
+     <value _nil="1"/>
+    </origin>
+    <cursor type="0"/>
+   </associatedAxes>
+   <ancillaryAxes>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series seriesIdentifier="">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <curveFitting _nil="1"/>
+     </series>
+    </seriesDefinitions>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <majorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </majorGrid>
+    <minorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </minorGrid>
+    <origin>
+     <value _type="NumberDataElement" value="0.0"/>
+    </origin>
+   </ancillaryAxes>
+   <seriesDefinitions>
+    <query definition=""/>
+    <series seriesIdentifier="">
+     <label>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;ACTION1&quot;]"/>
+     <curveFitting _nil="1"/>
+    </series>
+    <grouping enabled="true"/>
+   </seriesDefinitions>
+   <lineAttributes>
+    <color _nil="1"/>
+   </lineAttributes>
+   <label>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </label>
+   <majorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </majorGrid>
+   <minorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </minorGrid>
+   <origin>
+    <value _nil="1"/>
+   </origin>
+   <cursor type="0"/>
+  </axes>
+  <rotation>
+   <angles/>
+  </rotation>
+ </ChartWithAxes>
+</ActuateChart>
+]]></xml-property>
+                        <property name="outputFormat">JS</property>
+                        <property name="inheritColumns">false</property>
+                        <property name="height">400px</property>
+                        <property name="width">350pt</property>
+                        <expression name="bookmark" type="javascript">"actionReport"</expression>
+                        <property name="dataSet">Duration per task</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">MIN_DUR</property>
+                                <text-property name="displayName">Minimum duration</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["MIN_DUR"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">MAX_DUR</property>
+                                <text-property name="displayName">Maximum duration</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["MAX_DUR"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">AVG_DUR</property>
+                                <text-property name="displayName">Average duration</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["AVG_DUR"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ACTION1</property>
+                                <text-property name="displayName">Task</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION1"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                    </extended-item>
+                    <extended-item extensionName="HTMLButton" name="resetTable" id="74">
+                        <method name="clientScripts"><![CDATA[
+/**
+ * Occurs when mouse clicks.
+ * @param event
+ */
+
+this.onclick = function(event)
+{ 
+	// get viewer
+	ihubSendBack='Reset all filters';
+	var viewer = actuate.getViewer(event.srcElement || event.target);
+
+	//get table
+	var table = viewer.getCurrentPageContent().getTableByBookmark("mainTable");
+	var chart = viewer.getCurrentPageContent().getChartByBookmark("dateReport");
+
+	//create the filter object
+
+
+	table.clearFilters("ACTION");
+	table.clearFilters("ACTION_USER");
+	table.clearFilters("START_DATE");
+	chart.clearFilters("ACTION");
+	chart.submit();
+	table.submit();
+}
+]]></method>
+                        <expression name="text" type="constant">Reset filters</expression>
+                    </extended-item>
+                </cell>
+                <cell id="10">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <extended-item extensionName="Chart" id="69">
+                        <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithAxes version="2.6.1" type="Line Chart" subType="Overlay" dimension="0">
+  <block>
+   <children _type="TitleBlock" visible="true">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <triggers condition="2">
+     <action type="3">
+      <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;&#13;&#10;table.clearFilters(&quot;START_DATE&quot;);&#13;&#10;table.submit();"/>
+     </action>
+    </triggers>
+    <cursor type="2"/>
+    <label>
+     <caption value="Duration per day"/>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" orientation="0" position="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <triggers condition="2">
+     <action type="2">
+      <value _type="SeriesValue" name=""/>
+     </action>
+    </triggers>
+    <cursor type="2"/>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator visible="false">
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,211.5,130.0"/>
+   <outline>
+    <color _nil="1"/>
+   </outline>
+   <cursor type="0"/>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <extendedProperties name="jschart.client.script" value="/**&#13;&#10; * Called before chart instance is rendered.&#13;&#10; *&#13;&#10; * @param options&#13;&#10; *            chart options&#13;&#10; * @param  chart&#13;&#10; *             chart instance&#13;&#10; */&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;    var newWidthStr = parent.document.getElementById(&quot;container&quot;).style.width;&#13;&#10;    var newHeightStr = parent.document.getElementById(&quot;container&quot;).style.height;&#13;&#10;&#13;&#10;    //newHeightStr= (parseInt(newHeightStr.substring(0, newHeightStr.indexOf(&quot;px&quot;))) - 100).toString() + &quot;px&quot;;  &#13;&#10;    newWidthStr = ((parseInt(newWidthStr.substring(0, newWidthStr.indexOf(&quot;px&quot;)))/3) - 50).toString() + &quot;px&quot;;&#13;&#10;&#13;&#10;    parent.document.getElementById(options.chart.renderTo).style.width = newWidthStr;&#13;&#10;    //parent.document.getElementById(options.chart.renderTo).style.height = newHeightStr;&#13;&#10;    parent.document.getElementById(&quot;container_dateReport&quot;).style.width = newWidthStr;&#13;&#10;},"/>
+  <extendedProperties name="jschart.navigator" value="true"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="01/05/2000,02/01/2000,04/12/2000,03/12/2000,02/29/2000"/>
+   <orthogonalSampleData dataSetRepresentation="6,4,12,8,10" seriesDefinitionIndex="0"/>
+   <orthogonalSampleData dataSetRepresentation="12.0,8.0,24.0,16.0,20.0" seriesDefinitionIndex="1"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <axes type="3">
+   <title>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </title>
+   <associatedAxes primaryAxis="true" percent="false">
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="LineSeries" seriesIdentifier="Average" stacked="false">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;DURATION_MINUTES&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;//alert(categoryData);&#13;&#10;var dtDate = new Date(categoryData);&#13;&#10;var dtYear = dtDate.getFullYear();&#13;&#10;var dtMonth = dtDate.getMonth();&#13;&#10;var dtDay = dtDate.getDate();&#13;&#10;&#13;&#10;//alert(&quot;Category data: &quot; + categoryData);&#13;&#10;//alert(&quot;Data: &quot; + dtDate.toLocaleString() + &quot;, year: &quot; + dtYear + &quot;, month: &quot; + dtMonth + &quot;, day: &quot; + dtDay);&#13;&#10;//alert(&quot;Noua data: &quot; + new Date(dtYear,dtMonth,dtDay,0,0,0,0));&#13;&#10;&#13;&#10;myFilter = &quot;From &quot; + new Date(dtYear,dtMonth,dtDay,0,0,0,0).toLocaleString() + &quot; to &quot; + new Date(dtYear,dtMonth,dtDay,23,59,59,999).toLocaleString();&#13;&#10;&#13;&#10;table.clearFilters(&quot;START_DATE&quot;);&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;START_DATE&quot;,&quot;BETWEEN&quot;,new Date(dtYear,dtMonth,dtDay,0,0,0,0).toLocaleString(),new Date(dtYear,dtMonth,dtDay,23,59,59,999).toLocaleString()));&#13;&#10;table.submit();"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+      <markers type="2">
+       <outline/>
+      </markers>
+      <lineAttributes>
+       <color _nil="1"/>
+      </lineAttributes>
+     </series>
+     <grouping _nil="1"/>
+    </seriesDefinitions>
+    <seriesDefinitions zOrder="1">
+     <query definition=""/>
+     <series _type="LineSeries" seriesIdentifier="SLA" stacked="false" paletteLineColor="false" curve="false" connectMissingValue="false">
+      <label visible="false">
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="30">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+      <markers>
+       <outline/>
+      </markers>
+      <lineAttributes style="3" thickness="1" visible="true">
+       <color _body=",255,255,0,0"/>
+      </lineAttributes>
+     </series>
+    </seriesDefinitions>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <majorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </majorGrid>
+    <minorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </minorGrid>
+    <origin>
+     <value _nil="1"/>
+    </origin>
+   </associatedAxes>
+   <seriesDefinitions sorting="0">
+    <query definition=""/>
+    <series seriesIdentifier="">
+     <label>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;START_DATE&quot;]"/>
+     <curveFitting _nil="1"/>
+    </series>
+    <grouping enabled="true" groupType="1" aggregateExpression="Average"/>
+    <sortKey definition="row[&quot;START_DATE&quot;]"/>
+   </seriesDefinitions>
+   <lineAttributes>
+    <color _nil="1"/>
+   </lineAttributes>
+   <label>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </label>
+   <formatSpecifier _type="JavaDateFormatSpecifier" pattern="dd-MM-yyyy"/>
+   <majorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </majorGrid>
+   <minorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </minorGrid>
+   <origin>
+    <value _nil="1"/>
+   </origin>
+  </axes>
+  <rotation>
+   <angles/>
+  </rotation>
+ </ChartWithAxes>
+</ActuateChart>
+]]></xml-property>
+                        <property name="outputFormat">JS</property>
+                        <list-property name="filter">
+                            <structure>
+                                <property name="operator">is-not-null</property>
+                                <expression name="expr" type="javascript">row["START_DATE"]</expression>
+                                <property name="updateAggregation">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="inheritColumns">false</property>
+                        <property name="height">400px</property>
+                        <property name="width">350pt</property>
+                        <expression name="bookmark" type="javascript">"dateReport"</expression>
+                        <property name="dataSet">Table report</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">ACTION</property>
+                                <text-property name="displayName">Task</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ACTION_USER</property>
+                                <text-property name="displayName">User</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION_USER"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">PROCESSING_CENTRE</property>
+                                <text-property name="displayName">Processing centre</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["PROCESSING_CENTRE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DURATION_MINUTES</property>
+                                <text-property name="displayName">Duration (minutes)</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DURATION_MINUTES"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">START_DATE</property>
+                                <text-property name="displayName">Start Date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["START_DATE"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">END_DATE</property>
+                                <text-property name="displayName">End Date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["END_DATE"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DESCRIPTION</property>
+                                <text-property name="displayName">Description</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DESCRIPTION"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                    </extended-item>
+                </cell>
+                <cell id="11">
+                    <property name="borderBottomStyle">none</property>
+                    <property name="borderLeftStyle">none</property>
+                    <property name="borderRightStyle">none</property>
+                    <property name="borderTopStyle">none</property>
+                    <extended-item extensionName="Chart" id="71">
+                        <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithAxes version="2.6.1" type="Bar Chart" subType="Side-by-side" dimension="0" orientation="0">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <triggers condition="2">
+     <action type="3">
+      <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;&#13;&#10;table.clearFilters(&quot;ACTION_USER&quot;);&#13;&#10;table.submit();"/>
+     </action>
+    </triggers>
+    <cursor type="2"/>
+    <label>
+     <caption value="Duration per user"/>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" orientation="0" position="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <triggers condition="2">
+     <action type="2">
+      <value _type="SeriesValue" name=""/>
+     </action>
+    </triggers>
+    <cursor type="2"/>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator visible="false">
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,185.25,130.0"/>
+   <outline>
+    <color _nil="1"/>
+   </outline>
+   <cursor type="0"/>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <extendedProperties name="jschart.client.script" value="/**&#13;&#10; * Called before chart instance is rendered.&#13;&#10; *&#13;&#10; * @param options&#13;&#10; *            chart options&#13;&#10; * @param  chart&#13;&#10; *             chart instance&#13;&#10; */&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;    var newWidthStr = parent.document.getElementById(&quot;container&quot;).style.width;&#13;&#10;    var newHeightStr = parent.document.getElementById(&quot;container&quot;).style.height;&#13;&#10;&#13;&#10;    //newHeightStr= (parseInt(newHeightStr.substring(0, newHeightStr.indexOf(&quot;px&quot;))) - 100).toString() + &quot;px&quot;;  &#13;&#10;    newWidthStr = ((parseInt(newWidthStr.substring(0, newWidthStr.indexOf(&quot;px&quot;)))/3) - 50).toString() + &quot;px&quot;;&#13;&#10;&#13;&#10;    parent.document.getElementById(options.chart.renderTo).style.width = newWidthStr;&#13;&#10;    //parent.document.getElementById(options.chart.renderTo).style.height = newHeightStr;&#13;&#10;    parent.document.getElementById(&quot;container_userReport&quot;).style.width = newWidthStr;&#13;&#10;&#13;&#10;},"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="A, B, C"/>
+   <orthogonalSampleData dataSetRepresentation="5,4,12" seriesDefinitionIndex="0"/>
+   <orthogonalSampleData dataSetRepresentation="10.0,8.0,24.0" seriesDefinitionIndex="1"/>
+   <orthogonalSampleData dataSetRepresentation="15.0,12.0,36.0" seriesDefinitionIndex="2"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <axes>
+   <title>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </title>
+   <associatedAxes primaryAxis="true">
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="BarSeries" seriesIdentifier="Min" labelPosition="5" stacked="false" riser="0">
+      <label visible="true">
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;DURATION_MINUTES&quot;]">
+       <grouping enabled="true" aggregateExpression="Min"/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;//alert(categoryData);&#13;&#10;&#13;&#10;myFilter = categoryData;&#13;&#10;&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;ACTION_USER&quot;,&quot;eq&quot;,categoryData));&#13;&#10;table.submit();"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+     </series>
+     <grouping _nil="1"/>
+    </seriesDefinitions>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="BarSeries" seriesIdentifier="Average" labelPosition="5" stacked="false" riser="0">
+      <label visible="true">
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;DURATION_MINUTES&quot;]">
+       <grouping enabled="true" aggregateExpression="Average"/>
+      </dataDefinition>
+      <dataPoint>
+       <components type="1">
+        <formatSpecifier _type="NumberFormatSpecifier" prefix="" suffix="" fractionDigits="2"/>
+       </components>
+      </dataPoint>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;//alert(categoryData);&#13;&#10;&#13;&#10;myFilter = categoryData;&#13;&#10;&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;ACTION_USER&quot;,&quot;eq&quot;,categoryData));&#13;&#10;table.submit();"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+     </series>
+     <grouping _nil="1"/>
+    </seriesDefinitions>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="BarSeries" seriesIdentifier="Max" labelPosition="5" stacked="false" riser="0">
+      <label visible="true">
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;DURATION_MINUTES&quot;]">
+       <grouping enabled="true" aggregateExpression="Max"/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="// get viewer&#13;&#10;var viewer = actuate.getViewer(evt.srcElement || evt.target);&#13;&#10;&#13;&#10;//get table&#13;&#10;var table = viewer.getCurrentPageContent().getTableByBookmark(&quot;mainTable&quot;);&#13;&#10;&#13;&#10;//create the filter object&#13;&#10;&#13;&#10;//alert(categoryData);&#13;&#10;&#13;&#10;myFilter = categoryData;&#13;&#10;&#13;&#10;table.setFilters(new actuate.data.Filter(&quot;ACTION_USER&quot;,&quot;eq&quot;,categoryData));&#13;&#10;table.submit();"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <cursor type="2"/>
+     </series>
+     <grouping _nil="1"/>
+    </seriesDefinitions>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <majorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </majorGrid>
+    <minorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </minorGrid>
+    <origin>
+     <value _nil="1"/>
+    </origin>
+   </associatedAxes>
+   <seriesDefinitions>
+    <query definition=""/>
+    <series seriesIdentifier="">
+     <label>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;ACTION_USER&quot;]"/>
+     <curveFitting _nil="1"/>
+    </series>
+    <grouping enabled="true"/>
+   </seriesDefinitions>
+   <lineAttributes>
+    <color _nil="1"/>
+   </lineAttributes>
+   <label>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </label>
+   <majorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </majorGrid>
+   <minorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </minorGrid>
+   <origin>
+    <value _nil="1"/>
+   </origin>
+  </axes>
+  <rotation>
+   <angles/>
+  </rotation>
+ </ChartWithAxes>
+</ActuateChart>
+]]></xml-property>
+                        <property name="outputFormat">JS</property>
+                        <list-property name="filter">
+                            <structure>
+                                <property name="operator">is-not-null</property>
+                                <expression name="expr" type="javascript">row["ACTION_USER"]</expression>
+                                <property name="updateAggregation">true</property>
+                            </structure>
+                        </list-property>
+                        <property name="inheritColumns">false</property>
+                        <property name="height">400px</property>
+                        <property name="width">350pt</property>
+                        <expression name="bookmark" type="javascript">"userReport"</expression>
+                        <property name="dataSet">Table report</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">ACTION</property>
+                                <text-property name="displayName">Task</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ACTION_USER</property>
+                                <text-property name="displayName">User</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION_USER"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">PROCESSING_CENTRE</property>
+                                <text-property name="displayName">Processing centre</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["PROCESSING_CENTRE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DURATION_MINUTES</property>
+                                <text-property name="displayName">Duration (minutes)</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DURATION_MINUTES"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">START_DATE</property>
+                                <text-property name="displayName">Start Date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["START_DATE"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">END_DATE</property>
+                                <text-property name="displayName">End Date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["END_DATE"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DESCRIPTION</property>
+                                <text-property name="displayName">Description</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DESCRIPTION"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                    </extended-item>
+                </cell>
+            </row>
+            <row id="117">
+                <cell id="118">
+                    <data id="125">
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">filterStr</property>
+                                <text-property name="displayName">filterStr</text-property>
+                                <expression name="expression" type="javascript">vars["filterStr"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">filterStr</property>
+                    </data>
+                </cell>
+                <cell id="119"/>
+                <cell id="120"/>
+            </row>
+            <row id="12">
+                <cell id="13">
+                    <property name="colSpan">3</property>
+                    <property name="rowSpan">1</property>
+                    <table name="mytable" id="19">
+                        <property name="canShrink">false</property>
+                        <property name="width">100%</property>
+                        <property name="dataSet">Table report</property>
+                        <property name="theme">ThemesReportItems31.Table-Modern</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">ACTION</property>
+                                <text-property name="displayName">Task</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">ACTION_USER</property>
+                                <text-property name="displayName">User</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["ACTION_USER"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">PROCESSING_CENTRE</property>
+                                <text-property name="displayName">Processing centre</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["PROCESSING_CENTRE"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DURATION_MINUTES</property>
+                                <text-property name="displayName">Duration (minutes)</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DURATION_MINUTES"]</expression>
+                                <property name="dataType">float</property>
+                            </structure>
+                            <structure>
+                                <property name="name">START_DATE</property>
+                                <text-property name="displayName">Start Date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["START_DATE"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">END_DATE</property>
+                                <text-property name="displayName">End Date</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["END_DATE"]</expression>
+                                <property name="dataType">date-time</property>
+                            </structure>
+                            <structure>
+                                <property name="name">DESCRIPTION</property>
+                                <text-property name="displayName">Description</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["DESCRIPTION"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">R_OBJECT_ID2</property>
+                                <text-property name="displayName">Object ID</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["R_OBJECT_ID2"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <expression name="bookmark" type="javascript">"mainTable"</expression>
+                        <list-property name="filter">
+                            <structure>
+                                <property name="operator">is-not-null</property>
+                                <expression name="expr" type="javascript">row["START_DATE"]</expression>
+                                <property name="updateAggregation">true</property>
+                            </structure>
+                        </list-property>
+                        <column id="58"/>
+                        <column id="59"/>
+                        <column id="60"/>
+                        <column id="61"/>
+                        <column id="62"/>
+                        <column id="63"/>
+                        <column id="64"/>
+                        <header>
+                            <row id="20">
+                                <cell id="21">
+                                    <label id="22">
+                                        <property name="display">block</property>
+                                        <text-property name="text">Task</text-property>
+                                    </label>
+                                    <text id="75">
+                                        <property name="contentType">html</property>
+                                        <text-property name="content"><![CDATA[<div id="myTab3"></div>
+
+<script>
+var allRowOdd3 = $("#myTab3").closest("table").find( "tr:odd"); 
+var allCells3 = $("#myTab3").closest("table").find( "td" );
+var allHeaders3 = $("#myTab3").closest("table").find( "th" );
+
+$(document).ready(function(){
+  allRowOdd3.css("background-color","<VALUE-OF>vars["highLight"]</VALUE-OF>");
+});
+
+allCells3
+  .on("mouseover", function() {
+    var el = $(this);
+    var pos = el.index();
+    
+/*** Highlight the row ***/  
+    el.parent().find("td").css("background-color","<VALUE-OF>vars["rowColor"]</VALUE-OF>");
+    
+/*** Highlight the col ***/  
+//    allCells3.filter(":nth-child(" + (pos+1) + ")").css("background-color","<VALUE-OF>vars["colColor"]</VALUE-OF>");
+    
+/*** Highlight the header ***/  
+//    allHeaders3.filter(":nth-child(" + (pos+1) + ")").css("background-color","<VALUE-OF>vars["headerColor"]</VALUE-OF>");
+    
+/*** Highlight the cell ***/  
+   	el.css("background-color","<VALUE-OF>vars["cellColor"]</VALUE-OF>");
+  })
+  
+  .on("mouseout", function() {
+    allCells3.css("background-color","");
+    allHeaders3.css("background-color","");
+    allRowOdd3.css("background-color","<VALUE-OF>vars["highLight"]</VALUE-OF>");    
+  });
+</script>]]></text-property>
+                                    </text>
+                                </cell>
+                                <cell id="23">
+                                    <label id="24">
+                                        <text-property name="text">User</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="25">
+                                    <label id="26">
+                                        <text-property name="text">Processing centre</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="27">
+                                    <label id="28">
+                                        <text-property name="text">Duration (min)</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="29">
+                                    <label id="30">
+                                        <text-property name="text">Start Date</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="31">
+                                    <label id="32">
+                                        <text-property name="text">End Date</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="33">
+                                    <label id="34">
+                                        <text-property name="text">DESCRIPTION</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <detail>
+                            <row id="35">
+                                <cell id="36">
+                                    <data id="37">
+                                        <property name="textAlign">left</property>
+                                        <property name="resultSetColumn">ACTION</property>
+                                        <list-property name="action">
+                                            <structure>
+                                                <property name="linkType">hyperlink</property>
+                                                <expression name="uri" type="javascript">"http://nkxcp23:8000/BT_Contracts/#btctr_electronic_dossier/folders%2Fbtctr_electronic_dossier%2F" + row["R_OBJECT_ID2"] + "/btctr_view_electronic_dos"</expression>
+                                                <property name="targetWindow">_blank</property>
+                                            </structure>
+                                        </list-property>
+                                    </data>
+                                </cell>
+                                <cell id="38">
+                                    <data id="39">
+                                        <property name="textAlign">left</property>
+                                        <property name="resultSetColumn">ACTION_USER</property>
+                                    </data>
+                                </cell>
+                                <cell id="40">
+                                    <data id="41">
+                                        <property name="textAlign">left</property>
+                                        <property name="resultSetColumn">PROCESSING_CENTRE</property>
+                                    </data>
+                                </cell>
+                                <cell id="42">
+                                    <data id="43">
+                                        <property name="textAlign">right</property>
+                                        <list-property name="highlightRules">
+                                            <structure>
+                                                <property name="operator">gt</property>
+                                                <property name="color">#FF0000</property>
+                                                <expression name="testExpr" type="javascript">row["DURATION_MINUTES"]</expression>
+                                                <simple-property-list name="value1">
+                                                    <value type="javascript">35</value>
+                                                </simple-property-list>
+                                            </structure>
+                                        </list-property>
+                                        <property name="resultSetColumn">DURATION_MINUTES</property>
+                                    </data>
+                                </cell>
+                                <cell id="44">
+                                    <data id="45">
+                                        <property name="textAlign">left</property>
+                                        <property name="resultSetColumn">START_DATE</property>
+                                    </data>
+                                </cell>
+                                <cell id="46">
+                                    <data id="47">
+                                        <property name="textAlign">left</property>
+                                        <property name="resultSetColumn">END_DATE</property>
+                                    </data>
+                                </cell>
+                                <cell id="48">
+                                    <data id="49">
+                                        <property name="textAlign">left</property>
+                                        <property name="resultSetColumn">DESCRIPTION</property>
+                                    </data>
+                                </cell>
+                            </row>
+                        </detail>
+                        <footer>
+                            <row id="50">
+                                <cell id="51"/>
+                                <cell id="52"/>
+                                <cell id="53"/>
+                                <cell id="54"/>
+                                <cell id="55"/>
+                                <cell id="56"/>
+                                <cell id="57"/>
+                            </row>
+                        </footer>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+    <property name="pageVariables">
+        <variable-element name="rowColor">
+            <expression name="value" type="javascript">'#DCDCDC'</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="colColor">
+            <expression name="value" type="javascript">'#CCCCFF'</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="cellColor">
+            <expression name="value" type="javascript">'#CCE5FF'</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="highLight">
+            <expression name="value" type="javascript">'#EEEEEE'</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="headerColor">
+            <expression name="value" type="javascript">'#7979FF'</expression>
+            <property name="type">report</property>
+        </variable-element>
+        <variable-element name="filterStr">
+            <expression name="value" type="javascript">""</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
+</report>

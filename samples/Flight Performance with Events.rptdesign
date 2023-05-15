@@ -1,0 +1,2250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.11.0.v202101151752</property>
+    <text-property name="title">Flight Performance with Events</text-property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="layoutPreference">fixed layout</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">/ThemesReportItems31.rptlibrary</property>
+            <property name="namespace">ThemesReportItems31</property>
+        </structure>
+    </list-property>
+    <method name="onContentUpdate"><![CDATA[$("head").append("<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>");]]></method>
+    <parameters>
+        <cascading-parameter-group name="US Geo" id="77">
+            <property name="linkedDataModel">US delay data</property>
+            <property name="dataSetMode">single</property>
+            <parameters>
+                <scalar-parameter name="Region" id="80">
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <expression name="valueExpr">row["region"]</expression>
+                    <expression name="labelExpr">row["region"]</expression>
+                    <expression name="sortByColumn">dataSetRow["region"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">string</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">West</value>
+                    </simple-property-list>
+                    <property name="linkedDataModelName">US delay data</property>
+                    <property name="paramType">simple</property>
+                    <property name="controlType">list-box</property>
+                    <property name="mustMatch">false</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+                <scalar-parameter name="State" id="81">
+                    <property name="valueType">dynamic</property>
+                    <property name="isRequired">true</property>
+                    <expression name="valueExpr">row["state"]</expression>
+                    <expression name="labelExpr">row["state"]</expression>
+                    <expression name="sortByColumn">dataSetRow["state"]</expression>
+                    <property name="sortDirection">asc</property>
+                    <property name="dataType">string</property>
+                    <simple-property-list name="defaultValue">
+                        <value type="constant">CA</value>
+                    </simple-property-list>
+                    <property name="linkedDataModelName">US delay data</property>
+                    <property name="paramType">simple</property>
+                    <property name="controlType">list-box</property>
+                    <property name="mustMatch">false</property>
+                    <property name="fixedOrder">false</property>
+                    <structure name="format"/>
+                </scalar-parameter>
+            </parameters>
+        </cascading-parameter-group>
+    </parameters>
+    <data-sources>
+        <data-mart-data-source name="data object - flight delay" id="7">
+            <property name="datamartURL">Data Objects/Flight Delay</property>
+            <property name="accessType">latest</property>
+        </data-mart-data-source>
+    </data-sources>
+    <property name="linkedDataModels">
+        <data-mart-linked-data-model name="US delay data" id="8">
+            <property name="dataSource">data object - flight delay</property>
+            <property name="dataObject">US delay data</property>
+        </data-mart-linked-data-model>
+    </property>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="orientation">auto</property>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <table id="2001">
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">state1</property>
+                    <text-property name="displayName">state</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["state1"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">full_state</property>
+                    <text-property name="displayName">full_state</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["full_state"].toUpperCase()</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <property name="linkedDataModel">US delay data</property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">row["state1"]</expression>
+                    <simple-property-list name="value1">
+                        <value type="javascript">params["State"].value</value>
+                    </simple-property-list>
+                    <property name="updateAggregation">true</property>
+                </structure>
+            </list-property>
+            <column id="2015"/>
+            <column id="2016">
+                <property name="textAlign">right</property>
+            </column>
+            <detail>
+                <row id="2007">
+                    <cell id="2008">
+                        <property name="verticalAlign">middle</property>
+                        <data id="2011">
+                            <property name="fontFamily">"Raleway"</property>
+                            <property name="fontSize">40px</property>
+                            <method name="onCreate"><![CDATA[this.getStyle().fontWeight=300;
+if (params["Region"].value=="West") {
+	this.getStyle().color="#4BAEE2";
+}
+else if (params["Region"].value=="Midwest") {
+	this.getStyle().color="#ea6f3e";
+}
+else if (params["Region"].value=="Northeast") {
+	this.getStyle().color="#74be3a";
+}
+else {
+	this.getStyle().color="#b75ed4";
+}]]></method>
+                            <property name="resultSetColumn">full_state</property>
+                        </data>
+                    </cell>
+                    <cell id="2010">
+                        <image id="1999">
+                            <property name="source">file</property>
+                            <expression name="uri" type="javascript">if (params["Region"].value=="West") {&#13;
+	"images/west_nonselected.png";&#13;
+}&#13;
+else if (params["Region"].value=="South") {&#13;
+	"images/south_nonselected.png";&#13;
+}&#13;
+else if (params["Region"].value=="Northeast") {&#13;
+	"images/northeast_nonselected.png";&#13;
+}&#13;
+else  {&#13;
+	"images/midwest_nonselected.png";&#13;
+}</expression>
+                        </image>
+                    </cell>
+                </row>
+            </detail>
+        </table>
+        <table id="2097">
+            <property name="fontFamily">"Raleway"</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">state</property>
+                    <text-property name="displayName">state</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["state"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">busiest_airport</property>
+                    <text-property name="displayName">busiest_airport</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["busiest_airport"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">busiest_city</property>
+                    <text-property name="displayName">busiest_city</text-property>
+                    <expression name="expression" type="javascript">"(" + dataSetRow["busiest_city"] + ")"</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">worst_airport</property>
+                    <text-property name="displayName">worst_airport</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["worst_airport"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">worst_delay</property>
+                    <property name="dataType">decimal</property>
+                    <simple-property-list name="aggregateOn">
+                        <value>worst_airport</value>
+                    </simple-property-list>
+                    <property name="aggregateFunction">FIRST</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["worst_delay"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">worst_city</property>
+                    <text-property name="displayName">worst_city</text-property>
+                    <expression name="expression" type="javascript">"(" + dataSetRow["worst_city"] + ")"</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <property name="linkedDataModel">US delay data</property>
+            <list-property name="filter">
+                <structure>
+                    <property name="operator">eq</property>
+                    <expression name="expr" type="javascript">row["state"]</expression>
+                    <simple-property-list name="value1">
+                        <value type="javascript">params["State"].value</value>
+                    </simple-property-list>
+                    <property name="updateAggregation">true</property>
+                </structure>
+            </list-property>
+            <property name="isSummaryTable">true</property>
+            <column id="2103">
+                <property name="width">60px</property>
+            </column>
+            <column id="2219">
+                <property name="width">40px</property>
+            </column>
+            <column id="2112"/>
+            <column id="2118">
+                <property name="width">20px</property>
+            </column>
+            <column id="2236">
+                <property name="width">60px</property>
+            </column>
+            <column id="2115">
+                <property name="width">40px</property>
+            </column>
+            <column id="2130"/>
+            <column id="2127">
+                <property name="width">20px</property>
+            </column>
+            <column id="2124">
+                <property name="width">60px</property>
+            </column>
+            <column id="2121"/>
+            <group id="2104">
+                <property name="groupName">state</property>
+                <expression name="keyExpr" type="javascript">row["state"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["state"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+                <header>
+                    <row id="2105">
+                        <cell id="2106">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <image id="1126">
+                                <property name="height">42px</property>
+                                <property name="width">45px</property>
+                                <property name="source">embed</property>
+                                <property name="imageName">airplanes.png</property>
+                            </image>
+                        </cell>
+                        <cell id="2218">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="2231">
+                                <property name="backgroundColor">white</property>
+                                <property name="fontFamily">"Raleway"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#B7B7B7</property>
+                                <property name="textAlign">left</property>
+                                <text-property name="text">BUSIEST AIRPORT</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2117"/>
+                        <cell id="2234">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <image id="2237">
+                                <property name="height">39px</property>
+                                <property name="width">38px</property>
+                                <property name="source">embed</property>
+                                <property name="imageName">thumbsdown1.png</property>
+                            </image>
+                        </cell>
+                        <cell id="2114">
+                            <property name="colSpan">2</property>
+                            <property name="rowSpan">1</property>
+                            <label id="2232">
+                                <property name="backgroundColor">white</property>
+                                <property name="fontFamily">"Raleway"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#B7B7B7</property>
+                                <property name="textAlign">left</property>
+                                <text-property name="text">WORST AIRPORT</text-property>
+                            </label>
+                        </cell>
+                        <cell id="2126"/>
+                        <cell id="2123">
+                            <property name="colSpan">1</property>
+                            <property name="rowSpan">2</property>
+                            <image id="2239">
+                                <property name="height">48px</property>
+                                <property name="width">48px</property>
+                                <property name="source">embed</property>
+                                <property name="imageName">clock.png</property>
+                            </image>
+                        </cell>
+                        <cell id="2120">
+                            <label id="2238">
+                                <property name="backgroundColor">white</property>
+                                <property name="fontFamily">"Raleway"</property>
+                                <property name="fontSize">10pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#B7B7B7</property>
+                                <property name="textAlign">left</property>
+                                <text-property name="text">WORST DELAY RATE</text-property>
+                            </label>
+                        </cell>
+                    </row>
+                    <row id="2220">
+                        <cell id="2222">
+                            <data id="2136">
+                                <property name="fontSize">12pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#666666</property>
+                                <property name="resultSetColumn">busiest_airport</property>
+                            </data>
+                        </cell>
+                        <cell id="2223">
+                            <data id="2158">
+                                <property name="fontSize">12pt</property>
+                                <property name="color">#666666</property>
+                                <property name="resultSetColumn">busiest_city</property>
+                            </data>
+                        </cell>
+                        <cell id="2224"/>
+                        <cell id="2225">
+                            <data id="2180">
+                                <property name="fontSize">12pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#666666</property>
+                                <property name="resultSetColumn">worst_airport</property>
+                            </data>
+                        </cell>
+                        <cell id="2226">
+                            <data id="2204">
+                                <property name="fontSize">12pt</property>
+                                <property name="color">#666666</property>
+                                <property name="resultSetColumn">worst_city</property>
+                            </data>
+                        </cell>
+                        <cell id="2227"/>
+                        <cell id="2229">
+                            <data id="2195">
+                                <property name="fontSize">12pt</property>
+                                <property name="fontWeight">bold</property>
+                                <property name="color">#666666</property>
+                                <structure name="numberFormat">
+                                    <property name="category">Percent</property>
+                                    <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                </structure>
+                                <property name="resultSetColumn">worst_delay</property>
+                            </data>
+                        </cell>
+                    </row>
+                </header>
+            </group>
+            <group id="2132">
+                <property name="groupName">busiest_airport</property>
+                <expression name="keyExpr" type="javascript">row["busiest_airport"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["busiest_airport"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+            </group>
+            <group id="2153">
+                <property name="groupName">busiest_city</property>
+                <expression name="keyExpr" type="javascript">row["busiest_city"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["busiest_city"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+            </group>
+            <group id="2174">
+                <property name="groupName">worst_airport</property>
+                <expression name="keyExpr" type="javascript">row["worst_airport"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["worst_airport"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+            </group>
+            <group id="2197">
+                <property name="groupName">worst_city</property>
+                <expression name="keyExpr" type="javascript">row["worst_city"]</expression>
+                <structure name="toc">
+                    <expression name="expressionValue" type="javascript">row["worst_city"]</expression>
+                </structure>
+                <property name="hideDetail">false</property>
+            </group>
+        </table>
+        <grid id="1983">
+            <column id="1984"/>
+            <column id="1985">
+                <property name="width">20%</property>
+            </column>
+            <row id="1986">
+                <cell id="1987">
+                    <table id="593">
+                        <list-property name="userProperties">
+                            <structure>
+                                <property name="name">__ac_group_collapse_level</property>
+                                <property name="type">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="width">7.770833333333333in</property>
+                        <property name="theme">ThemesReportItems31.Table-Modern</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">year</property>
+                                <text-property name="displayName">year</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["year"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state</property>
+                                <text-property name="displayName">state</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["state"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">arr_flights</property>
+                                <text-property name="displayName">arr_flights</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["arr_flights"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">arr_del15</property>
+                                <text-property name="displayName">arr_del15</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["arr_del15"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">US_arr_flights</property>
+                                <text-property name="displayName">US_arr_flights</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["US_arr_flights"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">US_arr_del15</property>
+                                <text-property name="displayName">US_arr_del15</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["US_arr_del15"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state total delay</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>year</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["arr_del15"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state % delay</property>
+                                <expression name="expression" type="javascript">row["state total delay"]/row["state total flights"]</expression>
+                                <property name="dataType">decimal</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state total flights</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>year</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["arr_flights"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">delay_percent</property>
+                                <text-property name="displayName">delay_percent</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["delay_percent"]</expression>
+                                <property name="dataType">decimal</property>
+                            </structure>
+                        </list-property>
+                        <expression name="bookmark" type="javascript">"percentage"</expression>
+                        <property name="multiViews">
+                            <multi-views id="679">
+                                <property name="index">0</property>
+                                <property name="views">
+                                    <extended-item extensionName="Chart" id="680">
+                                        <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithAxes version="2.6.1" type="Area Chart" subType="Overlay" script="&#10;/**&#10; * Called before populating the series dataset using the DataSetProcessor.&#10; *&#10; * @param series&#10; *            Series&#10; * @param idsp&#10; *            IDataSetProcessor&#10; * @param icsc&#10; *            IChartScriptContext&#10; */&#10;&#10;function beforeDataSetFilled( series, idsp, icsc )&#10;{&#10;}&#10;">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <label>
+     <caption value="PERCENTAGE OF FLIGHTS DELAYED">
+      <font size="10.0" bold="true"/>
+      <color _body=",255,184,184,184"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <cursor type="0"/>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator>
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <caption>
+      <color _body=",255,184,184,184"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,211.5,130.0"/>
+   <outline visible="false">
+    <color _nil="1"/>
+   </outline>
+   <cursor type="0"/>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.client.script" value="//initialize variable&#13;&#10;regionName : &#039;&#039;,&#13;&#10;&#13;&#10;beforeGeneration: function(options)&#13;&#10;{&#13;&#10;    //get regionnam when it&#039;s render on browser&#13;&#10;    this.regionName=this.getReportParameter(&quot;Region&quot;);&#13;&#10;    &#13;&#10;    options.title.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;    options.title.margin=20;&#13;&#10;    options.yAxis[0].labels.x=0;&#13;&#10;    options.yAxis[0].labels.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;    options.xAxis.labels.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;    options.xAxis.labels.y=20;&#13;&#10;    options.legend.itemStyle.fontFamily =&#039;Raleway&#039;;&#13;&#10;    options.tooltip.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;&#13;&#10;    options.series[0]={&#13;&#10;        color: &#039;#62554d&#039;,&#13;&#10;        fillOpacity:0,&#13;&#10;        lineColor: &#039;#62554d&#039;,&#13;&#10;        lineWidth: 2,&#13;&#10;        marker:{&#13;&#10;            radius: 4,&#13;&#10;            fillColor: &#039;#ffffff&#039;,&#13;&#10;            lineColor: &#039;#62554d&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;        }&#13;&#10;    }&#13;&#10;    options.series[1]={&#13;&#10;            color: &#039;#ff3111&#039;,&#13;&#10;            fillOpacity: 0.1,&#13;&#10;            lineColor: &#039;#ff3111&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;            marker:{&#13;&#10;                radius: 4,&#13;&#10;                fillColor: &#039;#ffffff&#039;,&#13;&#10;                lineColor: &#039;#ff3111&#039;,&#13;&#10;                lineWidth: 2,&#13;&#10;            }&#13;&#10;        }&#13;&#10;&#13;&#10;&#13;&#10;// format tooltip&#13;&#10;    options.tooltip.formatter = function() {&#13;&#10;                return &#039;&lt;b&gt;&#039;+ this.x +&#039;&lt;/b&gt;&lt;br&gt;&#039;&#13;&#10;                + this.series.name +&#039;: &#039; + (this.y*100).toFixed(2)+ &#039;%&#039;+&#039;&lt;/b&gt;&#039;;&#13;&#10;    };&#13;&#10;},&#13;&#10;&#13;&#10;//draw graph based on paraeter value&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;&#13;&#10;    if(this.regionName == &quot;Midwest&quot;){&#13;&#10;        options.series[0]={&#13;&#10;        color: &#039;#62554d&#039;,&#13;&#10;        fillOpacity:0,&#13;&#10;        lineColor: &#039;#62554d&#039;,&#13;&#10;        lineWidth: 2,&#13;&#10;        marker:{&#13;&#10;            radius: 4,&#13;&#10;            fillColor: &#039;#ffffff&#039;,&#13;&#10;            lineColor: &#039;#62554d&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;        }&#13;&#10;    }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#d25422&#039;,&#13;&#10;            fillOpacity: 0.1,&#13;&#10;            lineColor: &#039;#d25422&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;            marker:{&#13;&#10;                radius: 4,&#13;&#10;                fillColor: &#039;#ffffff&#039;,&#13;&#10;                lineColor: &#039;#d25422&#039;,&#13;&#10;                lineWidth: 2,&#13;&#10;            }&#13;&#10;        }&#13;&#10;    } else if (this.regionName == &quot;West&quot;) {&#13;&#10;        options.series[0]={&#13;&#10;        color: &#039;#586467&#039;,&#13;&#10;        fillOpacity:0,&#13;&#10;        lineColor: &#039;#586467&#039;,&#13;&#10;        lineWidth: 2,&#13;&#10;        marker:{&#13;&#10;            radius: 4,&#13;&#10;            fillColor: &#039;#ffffff&#039;,&#13;&#10;            lineColor: &#039;#586467&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;        }&#13;&#10;    }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#2e74a0&#039;,&#13;&#10;            fillOpacity: 0.1,&#13;&#10;            lineColor: &#039;#2e74a0&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;            marker:{&#13;&#10;                radius: 4,&#13;&#10;                fillColor: &#039;#ffffff&#039;,&#13;&#10;                lineColor: &#039;#2e74a0&#039;,&#13;&#10;                lineWidth: 2,&#13;&#10;            }&#13;&#10;        } &#13;&#10;    } else if (this.regionName == &quot;Northeast&quot;) {&#13;&#10;        options.series[0]={&#13;&#10;        color: &#039;#55624d&#039;,&#13;&#10;        fillOpacity:0,&#13;&#10;        lineColor: &#039;#55624d&#039;,&#13;&#10;        lineWidth: 2,&#13;&#10;        marker:{&#13;&#10;            radius: 4,&#13;&#10;            fillColor: &#039;#ffffff&#039;,&#13;&#10;            lineColor: &#039;#55624d&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;        }&#13;&#10;    }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#3e8d00&#039;,&#13;&#10;            fillOpacity: 0.1,&#13;&#10;            lineColor: &#039;#3e8d00&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;            marker:{&#13;&#10;                radius: 4,&#13;&#10;                fillColor: &#039;#ffffff&#039;,&#13;&#10;                lineColor: &#039;#3e8d00&#039;,&#13;&#10;                lineWidth: 2,&#13;&#10;            }&#13;&#10;        } &#13;&#10;    } else if (this.regionName == &quot;South&quot;) {&#13;&#10;        options.series[0]={&#13;&#10;        color: &#039;#605466&#039;,&#13;&#10;        fillOpacity:0,&#13;&#10;        lineColor: &#039;#605466&#039;,&#13;&#10;        lineWidth: 2,&#13;&#10;        marker:{&#13;&#10;            radius: 4,&#13;&#10;            fillColor: &#039;#ffffff&#039;,&#13;&#10;            lineColor: &#039;#605466&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;        }&#13;&#10;    }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#7b1c9a&#039;,&#13;&#10;            fillOpacity: 0.1,&#13;&#10;            lineColor: &#039;#7b1c9a&#039;,&#13;&#10;            lineWidth: 2,&#13;&#10;            marker:{&#13;&#10;                radius: 4,&#13;&#10;                fillColor: &#039;#ffffff&#039;,&#13;&#10;                lineColor: &#039;#7b1c9a&#039;,&#13;&#10;                lineWidth: 2,&#13;&#10;            }&#13;&#10;        } &#13;&#10;    }&#13;&#10;    &#13;&#10;},"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="&#039;A&#039;,&#039;B&#039;,&#039;C&#039;,&#039;D&#039;,&#039;E&#039;"/>
+   <orthogonalSampleData dataSetRepresentation="6,4,12,8,10" seriesDefinitionIndex="0"/>
+   <orthogonalSampleData dataSetRepresentation="12.0,8.0,24.0,16.0,20.0" seriesDefinitionIndex="1"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <axes interval="2">
+   <title>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </title>
+   <associatedAxes primaryAxis="true" percent="false">
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+    <seriesDefinitions zOrder="1">
+     <query definition=""/>
+     <series _type="AreaSeries" seriesIdentifier="National" stacked="false">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;delay_percent&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="document.dispatchEvent(new CustomEvent(&#039;getMessage&#039;, {detail: &#039;Click on &#039; + valueSeriesName + &#039; on category &#039; + categoryData + &#039; with value: &#039; + valueData}));"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <markers type="3" visible="true">
+       <outline/>
+      </markers>
+      <lineAttributes>
+       <color _nil="1"/>
+      </lineAttributes>
+     </series>
+    </seriesDefinitions>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="AreaSeries" seriesIdentifier="State" stacked="false">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;state % delay&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="document.dispatchEvent(new CustomEvent(&#039;getMessage&#039;, {detail: &#039;Click on &#039; + valueSeriesName + &#039; on category &#039; + categoryData + &#039; with value: &#039; + valueData}));"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+      <markers type="3" visible="true">
+       <outline/>
+      </markers>
+      <lineAttributes>
+       <color _nil="1"/>
+      </lineAttributes>
+     </series>
+    </seriesDefinitions>
+    <lineAttributes visible="false">
+     <color _nil="1"/>
+    </lineAttributes>
+    <label>
+     <caption>
+      <color _body=",255,184,184,184"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <formatSpecifier _type="NumberFormatSpecifier" prefix="" suffix="%" multiplier="100.0" fractionDigits="0"/>
+    <majorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </majorGrid>
+    <minorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </minorGrid>
+    <origin>
+     <value _nil="1"/>
+    </origin>
+   </associatedAxes>
+   <seriesDefinitions>
+    <query definition=""/>
+    <series seriesIdentifier="">
+     <label>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;year&quot;]"/>
+     <curveFitting _nil="1"/>
+    </series>
+    <grouping enabled="true"/>
+   </seriesDefinitions>
+   <lineAttributes visible="false">
+    <color _nil="1"/>
+   </lineAttributes>
+   <label>
+    <caption>
+     <color _body=",255,184,184,184"/>
+    </caption>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </label>
+   <majorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </majorGrid>
+   <minorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </minorGrid>
+   <origin>
+    <value _nil="1"/>
+   </origin>
+  </axes>
+  <rotation>
+   <angles/>
+  </rotation>
+ </ChartWithAxes>
+</ActuateChart>
+]]></xml-property>
+                                        <property name="outputFormat">JS</property>
+                                        <property name="inheritColumns">false</property>
+                                        <property name="height">245px</property>
+                                        <property name="width">575px</property>
+                                        <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                                    </extended-item>
+                                </property>
+                            </multi-views>
+                        </property>
+                        <property name="linkedDataModel">US delay data</property>
+                        <list-property name="filter">
+                            <structure>
+                                <property name="operator">eq</property>
+                                <expression name="expr" type="javascript">row["state"]</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">params["State"].value</value>
+                                </simple-property-list>
+                                <property name="updateAggregation">true</property>
+                            </structure>
+                        </list-property>
+                        <column id="627"/>
+                        <column id="629"/>
+                        <column id="630"/>
+                        <column id="656"/>
+                        <column id="631"/>
+                        <column id="632"/>
+                        <column id="659">
+                            <property name="width">0.9583333333333334in</property>
+                        </column>
+                        <header>
+                            <row id="664">
+                                <cell id="665"/>
+                                <cell id="667">
+                                    <property name="colSpan">3</property>
+                                    <property name="rowSpan">1</property>
+                                    <data id="611">
+                                        <property name="resultSetColumn">state</property>
+                                    </data>
+                                </cell>
+                                <cell id="670">
+                                    <property name="colSpan">3</property>
+                                    <property name="rowSpan">1</property>
+                                    <label id="604">
+                                        <text-property name="text">National</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="594">
+                                <cell id="595">
+                                    <label id="596">
+                                        <text-property name="text">year</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="599">
+                                    <label id="257">
+                                        <text-property name="text">Number of Delayed FLights</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="601">
+                                    <label id="376">
+                                        <text-property name="text">Total FLights</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="654">
+                                    <label id="265">
+                                        <text-property name="text">% Delayed</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="603">
+                                    <label id="673">
+                                        <text-property name="text">Number of Delayed FLights</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="605">
+                                    <label id="674">
+                                        <text-property name="text">Total FLights</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="657">
+                                    <label id="675">
+                                        <text-property name="text">% Delayed</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <group id="633">
+                            <property name="groupName">year</property>
+                            <expression name="keyExpr" type="javascript">row["year"]</expression>
+                            <structure name="toc">
+                                <expression name="expressionValue" type="javascript">row["year"]</expression>
+                            </structure>
+                            <property name="hideDetail">false</property>
+                            <header>
+                                <row id="634">
+                                    <cell id="635">
+                                        <data id="648">
+                                            <property name="resultSetColumn">year</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="637">
+                                        <data id="650">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">state total delay</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="638">
+                                        <data id="662">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">state total flights</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="655">
+                                        <data id="660">
+                                            <structure name="numberFormat">
+                                                <property name="category">Percent</property>
+                                                <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                            </structure>
+                                            <property name="resultSetColumn">state % delay</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="639">
+                                        <data id="619">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">US_arr_del15</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="640">
+                                        <data id="617">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">US_arr_flights</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="658">
+                                        <data id="677">
+                                            <structure name="numberFormat">
+                                                <property name="category">Percent</property>
+                                                <property name="pattern">###0.00%{RoundingMode=HALF_UP}</property>
+                                            </structure>
+                                            <property name="resultSetColumn">delay_percent</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </header>
+                        </group>
+                    </table>
+                </cell>
+                <cell id="1988">
+                    <property name="colSpan">1</property>
+                    <property name="rowSpan">2</property>
+                    <grid id="925">
+                        <property name="width">1.3541666666666667in</property>
+                        <expression name="bookmark" type="javascript">"causes"</expression>
+                        <column id="926">
+                            <property name="width">32.5px</property>
+                        </column>
+                        <column id="1958">
+                            <property name="width">32.5px</property>
+                        </column>
+                        <column id="1951">
+                            <property name="width">32.5px</property>
+                        </column>
+                        <column id="1944">
+                            <property name="width">32.5px</property>
+                        </column>
+                        <row id="929">
+                            <property name="backgroundColor">yellow</property>
+                            <property name="height">17px</property>
+                            <cell id="930">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">1</property>
+                                <property name="backgroundColor">#FFFFFF</property>
+                                <property name="fontFamily">"Raleway"</property>
+                                <property name="color">#B7B7B7</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <label id="937">
+                                    <property name="fontFamily">"Raleway"</property>
+                                    <property name="fontWeight">bold</property>
+                                    <property name="paddingTop">0pt</property>
+                                    <property name="paddingLeft">0pt</property>
+                                    <property name="paddingBottom">0pt</property>
+                                    <property name="paddingRight">0pt</property>
+                                    <property name="textAlign">center</property>
+                                    <text-property name="text">CAUSES OF DELAY</text-property>
+                                </label>
+                            </cell>
+                        </row>
+                        <row id="931">
+                            <property name="height">123px</property>
+                            <cell id="932">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">1</property>
+                                <property name="backgroundColor">#FFFFFF</property>
+                                <property name="paddingTop">6pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="textAlign">center</property>
+                                <extended-item extensionName="Chart" id="906">
+                                    <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithoutAxes version="2.6.1" type="Pie Chart" subType="Standard">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <label>
+     <caption>
+      <font name="Raleway" size="14.0"/>
+      <color _body=",255,85,85,85"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" visible="false" itemType="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator>
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,572.25,286.125"/>
+   <outline visible="false">
+    <color _nil="1"/>
+   </outline>
+   <cursor type="0"/>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.client.script" value="//initialize variable &#13;&#10;regionName : &#039;&#039;,&#13;&#10;carrierDelay  : &#039;&#039;,&#13;&#10;&#13;&#10;beforeGeneration: function(options)&#13;&#10;{&#13;&#10;    debugger;&#13;&#10;    //get the variable when it&#039;s render on the browser&#13;&#10;    this.regionName=this.getReportParameter(&quot;Region&quot;);&#13;&#10;    // &quot;Carrier Delay&quot; / (&quot;Carrier Delay&quot; + &quot;Non Carrier Delay&quot;)&#13;&#10;    // Format as needed&#13;&#10;    var carrierDelayPct = 100 * options.series[0].data[0].y  / (options.series[0].data[0].y + options.series[0].data[1].y);&#13;&#10;    this.carrierDelay=carrierDelayPct.toFixed(0) + &quot;%&quot;;&#13;&#10;    &#13;&#10;    options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;&#13;&#10;    options.chart.spacingTop=8;&#13;&#10;    options.chart.spacingRight=8;&#13;&#10;    options.chart.spacingBottom=8;&#13;&#10;    options.chart.spacingLeft=8;&#13;&#10;&#13;&#10;    options.title.text= &#039;&lt;b&gt;&#039; + this.carrierDelay + &#039;&lt;/b&gt;&lt;br&gt;&#039;;&#13;&#10;    options.title.align=&#039;center&#039;;&#13;&#10;    options.title.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.title.x=3;&#13;&#10;    options.title.y=8;&#13;&#10;    options.title.margin=-10;&#13;&#10;    &#13;&#10;    options.subtitle ={};&#13;&#10;    options.subtitle.text=&#039;CARRIER&#039;;&#13;&#10;    options.subtitle.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.subtitle.style= {&#13;&#10;        fontFamily:&#039;Raleway&#039;,&#13;&#10;        fontSize:10,&#13;&#10;        fontWeight: &#039;bold&#039;,&#13;&#10;        color:&#039;#b7b7b7&#039;,&#13;&#10;    };&#13;&#10;    options.subtitle.x=0;&#13;&#10;    options.subtitle.y=20;&#13;&#10;&#13;&#10;&#13;&#10;},&#13;&#10;&#13;&#10;&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;    debugger;&#13;&#10;    if(this.regionName == &quot;Midwest&quot;){&#13;&#10;        options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;    } else if (this.regionName == &quot;West&quot;) {&#13;&#10;        options.colors=[&#039;#4baee2&#039;, &#039;#d9e0e2&#039;];&#13;&#10;    } else if (this.regionName == &quot;Northeast&quot;) {&#13;&#10;        options.colors=[&#039;#74be3a&#039;, &#039;#dbe0d8&#039;];&#13;&#10;    } else if (this.regionName == &quot;South&quot;) {&#13;&#10;        options.colors=[&#039;#b75ed4&#039;, &#039;#dfdae1&#039;];&#13;&#10;    }&#13;&#10;    &#13;&#10;},"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="&#039;A&#039;,&#039;B&#039;,&#039;C&#039;,&#039;D&#039;,&#039;E&#039;"/>
+   <orthogonalSampleData dataSetRepresentation="6,4,12,8,10" seriesDefinitionIndex="0"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <seriesDefinitions>
+   <query definition=""/>
+   <seriesDefinitions>
+    <query definition=""/>
+    <seriesPalette/>
+    <series _type="PieSeries" seriesIdentifier="Series 1" labelPosition="4" explosionExpression="valueData=100" rotation="90.0" innerRadius="80.0">
+     <label visible="false">
+      <caption>
+       <font name="Raleway" size="16.0" bold="true"/>
+      </caption>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;total delay value&quot;]">
+      <grouping enabled="true" aggregateExpression="Average"/>
+     </dataDefinition>
+     <dataPoint>
+      <components type="3"/>
+     </dataPoint>
+     <cursor type="0"/>
+     <title>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </title>
+     <leaderLineAttributes visible="false"/>
+    </series>
+   </seriesDefinitions>
+   <series seriesIdentifier="">
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <dataDefinition definition="row[&quot;categories&quot;]"/>
+    <curveFitting _nil="1"/>
+   </series>
+   <grouping enabled="true"/>
+  </seriesDefinitions>
+ </ChartWithoutAxes>
+</ActuateChart>
+]]></xml-property>
+                                    <property name="outputFormat">JS</property>
+                                    <list-property name="filter">
+                                        <structure>
+                                            <property name="operator">eq</property>
+                                            <expression name="expr" type="javascript">data["state2"]</expression>
+                                            <simple-property-list name="value1">
+                                                <value type="javascript">params["State"].value</value>
+                                            </simple-property-list>
+                                            <property name="updateAggregation">true</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="inheritColumns">true</property>
+                                    <property name="height">120px</property>
+                                    <property name="width">120px</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">total delay value</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total delay value"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">categories</property>
+                                            <expression name="expression" type="javascript">dataSetRow["categories"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">state2</property>
+                                            <text-property name="displayName">state</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["state2"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                                    <property name="linkedDataModel">US delay data</property>
+                                </extended-item>
+                            </cell>
+                        </row>
+                        <row id="933">
+                            <cell id="934">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">1</property>
+                                <property name="backgroundColor">#FFFFFF</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="textAlign">center</property>
+                                <extended-item extensionName="Chart" id="1906">
+                                    <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithoutAxes version="2.6.1" type="Pie Chart" subType="Standard">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <label>
+     <caption>
+      <font name="Raleway" size="14.0"/>
+      <color _body=",255,85,85,85"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" visible="false" itemType="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator>
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,572.25,286.125"/>
+   <outline visible="false">
+    <color _nil="1"/>
+   </outline>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.client.script" value="//initialize variable &#13;&#10;regionName : &#039;&#039;,&#13;&#10;weatherDelay  : &#039;&#039;,&#13;&#10;&#13;&#10;beforeGeneration: function(options)&#13;&#10;{&#13;&#10;    //get the variable when it&#039;s render on the browser&#13;&#10;    this.regionName=this.getReportParameter(&quot;Region&quot;);&#13;&#10;    // &quot;Weather Delay&quot; / (&quot;Weahter Delay&quot; + &quot;Non Weather Delay&quot;)&#13;&#10;    // Format as needed&#13;&#10;    var weatherDelayPct = 100 * options.series[0].data[0].y  / (options.series[0].data[0].y + options.series[0].data[1].y);&#13;&#10;    this.weatherDelay=weatherDelayPct.toFixed(0) + &quot;%&quot;;&#13;&#10;    &#13;&#10;    options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;&#13;&#10;    options.chart.spacingTop=8;&#13;&#10;    options.chart.spacingRight=8;&#13;&#10;    options.chart.spacingBottom=8;&#13;&#10;    options.chart.spacingLeft=8;&#13;&#10;&#13;&#10;    options.title.text= &#039;&lt;b&gt;&#039; + this.weatherDelay + &#039;&lt;/b&gt;&lt;br&gt;&#039;;&#13;&#10;    options.title.align=&#039;center&#039;;&#13;&#10;    options.title.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.title.x=3;&#13;&#10;    options.title.y=8;&#13;&#10;    options.title.margin=-10;&#13;&#10;    &#13;&#10;    options.subtitle ={};&#13;&#10;    options.subtitle.text=&#039;WEATHER&#039;;&#13;&#10;    options.subtitle.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.subtitle.style= {&#13;&#10;        fontFamily:&#039;Raleway&#039;,&#13;&#10;        fontSize:10,&#13;&#10;        fontWeight: &#039;bold&#039;,&#13;&#10;        color:&#039;#b7b7b7&#039;,&#13;&#10;    };&#13;&#10;    options.subtitle.x=0;&#13;&#10;    options.subtitle.y=20;&#13;&#10;&#13;&#10;},&#13;&#10;&#13;&#10;&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;&#13;&#10;    if(this.regionName == &quot;Midwest&quot;){&#13;&#10;        options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;    } else if (this.regionName == &quot;West&quot;) {&#13;&#10;        options.colors=[&#039;#4baee2&#039;, &#039;#d9e0e2&#039;];&#13;&#10;    } else if (this.regionName == &quot;Northeast&quot;) {&#13;&#10;        options.colors=[&#039;#74be3a&#039;, &#039;#dbe0d8&#039;];&#13;&#10;    } else if (this.regionName == &quot;South&quot;) {&#13;&#10;        options.colors=[&#039;#b75ed4&#039;, &#039;#dfdae1&#039;];&#13;&#10;    }&#13;&#10;    &#13;&#10;},"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="&#039;A&#039;,&#039;B&#039;,&#039;C&#039;,&#039;D&#039;,&#039;E&#039;"/>
+   <orthogonalSampleData dataSetRepresentation="6,4,12,8,10" seriesDefinitionIndex="0"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <seriesDefinitions>
+   <query definition=""/>
+   <seriesDefinitions>
+    <query definition=""/>
+    <seriesPalette/>
+    <series _type="PieSeries" seriesIdentifier="Series 1" labelPosition="4" explosionExpression="valueData=100" rotation="90.0" innerRadius="80.0">
+     <label visible="false">
+      <caption>
+       <font name="Raleway" size="16.0" bold="true"/>
+      </caption>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;total delay value1&quot;]">
+      <grouping enabled="true" aggregateExpression="Average"/>
+     </dataDefinition>
+     <dataPoint>
+      <components type="3"/>
+     </dataPoint>
+     <cursor type="0"/>
+     <title>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </title>
+     <leaderLineAttributes visible="false"/>
+    </series>
+   </seriesDefinitions>
+   <series seriesIdentifier="">
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <dataDefinition definition="row[&quot;categories1&quot;]"/>
+    <curveFitting _nil="1"/>
+   </series>
+   <grouping enabled="true"/>
+  </seriesDefinitions>
+ </ChartWithoutAxes>
+</ActuateChart>
+]]></xml-property>
+                                    <property name="outputFormat">JS</property>
+                                    <list-property name="filter">
+                                        <structure>
+                                            <property name="operator">eq</property>
+                                            <expression name="expr" type="javascript">data["state3"]</expression>
+                                            <simple-property-list name="value1">
+                                                <value type="javascript">params["State"].value</value>
+                                            </simple-property-list>
+                                            <property name="updateAggregation">true</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="inheritColumns">true</property>
+                                    <property name="height">120px</property>
+                                    <property name="width">120px</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">categories1</property>
+                                            <expression name="expression" type="javascript">dataSetRow["categories1"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">total delay value1</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total delay value1"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">state3</property>
+                                            <text-property name="displayName">state</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["state3"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                                    <property name="linkedDataModel">US delay data</property>
+                                </extended-item>
+                            </cell>
+                        </row>
+                        <row id="935">
+                            <cell id="936">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">1</property>
+                                <property name="backgroundColor">#FFFFFF</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="textAlign">center</property>
+                                <extended-item extensionName="Chart" id="1907">
+                                    <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithoutAxes version="2.6.1" type="Pie Chart" subType="Standard">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <label>
+     <caption>
+      <font name="Raleway" size="14.0"/>
+      <color _body=",255,85,85,85"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" visible="false" itemType="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator>
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,572.25,286.125"/>
+   <outline visible="false">
+    <color _nil="1"/>
+   </outline>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.client.script" value="//initialize variable &#13;&#10;regionName : &#039;&#039;,&#13;&#10;nasDelay  : &#039;&#039;,&#13;&#10;&#13;&#10;beforeGeneration: function(options)&#13;&#10;{&#13;&#10;    //get the variable when it&#039;s render on the browser&#13;&#10;    this.regionName=this.getReportParameter(&quot;Region&quot;);&#13;&#10;    // &quot;NAS Delay&quot; / (&quot;NAS Delay&quot; + &quot;Non NAS Delay&quot;)&#13;&#10;    // Format as needed&#13;&#10;    var nasDelayPct = 100 * options.series[0].data[0].y  / (options.series[0].data[0].y + options.series[0].data[1].y);&#13;&#10;    this.nasDelay=nasDelayPct.toFixed(0) + &quot;%&quot;;&#13;&#10;    options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;    &#13;&#10;    options.chart.spacingTop=8;&#13;&#10;    options.chart.spacingRight=8;&#13;&#10;    options.chart.spacingBottom=8;&#13;&#10;    options.chart.spacingLeft=8;&#13;&#10;&#13;&#10;    options.title.text=&#039;&lt;b&gt;&#039; + this.nasDelay + &#039;&lt;/b&gt;&lt;br&gt;&#039;;&#13;&#10;    options.title.align=&#039;center&#039;;&#13;&#10;    options.title.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.title.x=3;&#13;&#10;    options.title.y=8;&#13;&#10;    options.title.margin=-10;&#13;&#10;    &#13;&#10;    options.subtitle ={};&#13;&#10;    options.subtitle.text=&#039;NAS&#039;;&#13;&#10;    options.subtitle.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.subtitle.style= {&#13;&#10;        fontFamily:&#039;Raleway&#039;,&#13;&#10;        fontSize:10,&#13;&#10;        fontWeight: &#039;bold&#039;,&#13;&#10;        color:&#039;#b7b7b7&#039;,&#13;&#10;    };&#13;&#10;    options.subtitle.x=0;&#13;&#10;    options.subtitle.y=20;&#13;&#10;&#13;&#10;},&#13;&#10;&#13;&#10;&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;&#13;&#10;    if(this.regionName == &quot;Midwest&quot;){&#13;&#10;        options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;    } else if (this.regionName == &quot;West&quot;) {&#13;&#10;        options.colors=[&#039;#4baee2&#039;, &#039;#d9e0e2&#039;];&#13;&#10;    } else if (this.regionName == &quot;Northeast&quot;) {&#13;&#10;        options.colors=[&#039;#74be3a&#039;, &#039;#dbe0d8&#039;];&#13;&#10;    } else if (this.regionName == &quot;South&quot;) {&#13;&#10;        options.colors=[&#039;#b75ed4&#039;, &#039;#dfdae1&#039;];&#13;&#10;    }&#13;&#10;    &#13;&#10;},"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="&#039;A&#039;,&#039;B&#039;,&#039;C&#039;,&#039;D&#039;,&#039;E&#039;"/>
+   <orthogonalSampleData dataSetRepresentation="6,4,12,8,10" seriesDefinitionIndex="0"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <seriesDefinitions>
+   <query definition=""/>
+   <seriesDefinitions>
+    <query definition=""/>
+    <seriesPalette/>
+    <series _type="PieSeries" seriesIdentifier="Series 1" labelPosition="4" explosionExpression="valueData=100" rotation="90.0" innerRadius="80.0">
+     <label visible="false">
+      <caption>
+       <font name="Raleway" size="16.0" bold="true"/>
+      </caption>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;total delay value2&quot;]">
+      <grouping enabled="true" aggregateExpression="Average"/>
+     </dataDefinition>
+     <dataPoint>
+      <components type="3"/>
+     </dataPoint>
+     <cursor type="0"/>
+     <title>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </title>
+     <leaderLineAttributes visible="false"/>
+    </series>
+   </seriesDefinitions>
+   <series seriesIdentifier="">
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <dataDefinition definition="row[&quot;categories2&quot;]"/>
+    <curveFitting _nil="1"/>
+   </series>
+   <grouping enabled="true"/>
+  </seriesDefinitions>
+ </ChartWithoutAxes>
+</ActuateChart>
+]]></xml-property>
+                                    <property name="outputFormat">JS</property>
+                                    <list-property name="filter">
+                                        <structure>
+                                            <property name="operator">eq</property>
+                                            <expression name="expr" type="javascript">row["state4"]</expression>
+                                            <simple-property-list name="value1">
+                                                <value type="javascript">params["State"].value</value>
+                                            </simple-property-list>
+                                            <property name="updateAggregation">true</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="inheritColumns">true</property>
+                                    <property name="height">120px</property>
+                                    <property name="width">120px</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">categories2</property>
+                                            <expression name="expression" type="javascript">dataSetRow["categories2"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">total delay value2</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total delay value2"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">state4</property>
+                                            <text-property name="displayName">state</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["state4"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                                    <property name="linkedDataModel">US delay data</property>
+                                </extended-item>
+                            </cell>
+                        </row>
+                        <row id="940">
+                            <cell id="941">
+                                <property name="colSpan">4</property>
+                                <property name="rowSpan">1</property>
+                                <property name="backgroundColor">#FFFFFF</property>
+                                <property name="paddingTop">0pt</property>
+                                <property name="paddingLeft">0pt</property>
+                                <property name="paddingBottom">0pt</property>
+                                <property name="paddingRight">0pt</property>
+                                <property name="textAlign">center</property>
+                                <extended-item extensionName="Chart" id="1908">
+                                    <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithoutAxes version="2.6.1" type="Pie Chart" subType="Standard">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <label>
+     <caption>
+      <font name="Raleway" size="14.0"/>
+      <color _body=",255,85,85,85"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend" visible="false" itemType="1">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator>
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,572.25,286.125"/>
+   <outline visible="false">
+    <color _nil="1"/>
+   </outline>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.client.script" value="//initialize variable &#13;&#10;regionName : &#039;&#039;,&#13;&#10;lateAircraftDelay  : &#039;&#039;,&#13;&#10;&#13;&#10;beforeGeneration: function(options)&#13;&#10;{&#13;&#10;    //get the variable when it&#039;s render on the browser&#13;&#10;    this.regionName=this.getReportParameter(&quot;Region&quot;);&#13;&#10;    // &quot;NAS Delay&quot; / (&quot;NAS Delay&quot; + &quot;Non NAS Delay&quot;)&#13;&#10;    // Format as needed&#13;&#10;    var lateAircraftDelayPct = 100 * options.series[0].data[0].y  / (options.series[0].data[0].y + options.series[0].data[1].y);&#13;&#10;    this.lateAircraftDelay=lateAircraftDelayPct.toFixed(0) + &quot;%&quot;;&#13;&#10;    &#13;&#10;    options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;    &#13;&#10;    options.chart.spacingTop=8;&#13;&#10;    options.chart.spacingRight=8;&#13;&#10;    options.chart.spacingBottom=8;&#13;&#10;    options.chart.spacingLeft=8;&#13;&#10;    &#13;&#10;    options.title.text=&#039;&lt;b&gt;&#039; + this.lateAircraftDelay + &#039;&lt;/b&gt;&lt;br&gt;&#039;;&#13;&#10;    options.title.align=&#039;center&#039;;&#13;&#10;    options.title.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.title.x=3;&#13;&#10;    options.title.y=8;&#13;&#10;    options.title.margin=-10;&#13;&#10;    &#13;&#10;    options.subtitle ={};&#13;&#10;    options.subtitle.text=&#039;LATE AIRCRAFT&#039;;&#13;&#10;    options.subtitle.verticalAlign=&#039;middle&#039;;&#13;&#10;    options.subtitle.style= {&#13;&#10;        fontFamily:&#039;Raleway&#039;,&#13;&#10;        fontSize:10,&#13;&#10;        fontWeight: &#039;bold&#039;,&#13;&#10;        color:&#039;#b7b7b7&#039;,&#13;&#10;    };&#13;&#10;    options.subtitle.x=0;&#13;&#10;    options.subtitle.y=20;&#13;&#10;&#13;&#10;},&#13;&#10;&#13;&#10;&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;&#13;&#10;    if(this.regionName == &quot;Midwest&quot;){&#13;&#10;        options.colors=[&#039;#ea6f3e&#039;, &#039;#E3DCD8&#039;];&#13;&#10;    } else if (this.regionName == &quot;West&quot;) {&#13;&#10;        options.colors=[&#039;#4baee2&#039;, &#039;#d9e0e2&#039;];&#13;&#10;    } else if (this.regionName == &quot;Northeast&quot;) {&#13;&#10;        options.colors=[&#039;#74be3a&#039;, &#039;#dbe0d8&#039;];&#13;&#10;    } else if (this.regionName == &quot;South&quot;) {&#13;&#10;        options.colors=[&#039;#b75ed4&#039;, &#039;#dfdae1&#039;];&#13;&#10;    }&#13;&#10;    &#13;&#10;},"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="&#039;A&#039;,&#039;B&#039;,&#039;C&#039;,&#039;D&#039;,&#039;E&#039;"/>
+   <orthogonalSampleData dataSetRepresentation="6,4,12,8,10" seriesDefinitionIndex="0"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <seriesDefinitions>
+   <query definition=""/>
+   <seriesDefinitions>
+    <query definition=""/>
+    <seriesPalette/>
+    <series _type="PieSeries" seriesIdentifier="Series 1" labelPosition="4" explosionExpression="valueData=100" rotation="90.0" innerRadius="80.0">
+     <label visible="false">
+      <caption>
+       <font name="Raleway" size="16.0" bold="true"/>
+      </caption>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;total delay value3&quot;]">
+      <grouping enabled="true" aggregateExpression="Average"/>
+     </dataDefinition>
+     <dataPoint>
+      <components type="3"/>
+     </dataPoint>
+     <cursor type="0"/>
+     <title>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </title>
+     <leaderLineAttributes visible="false"/>
+    </series>
+   </seriesDefinitions>
+   <series seriesIdentifier="">
+    <label>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <dataDefinition definition="row[&quot;categories3&quot;]"/>
+    <curveFitting _nil="1"/>
+   </series>
+   <grouping enabled="true"/>
+  </seriesDefinitions>
+ </ChartWithoutAxes>
+</ActuateChart>
+]]></xml-property>
+                                    <property name="outputFormat">JS</property>
+                                    <list-property name="filter">
+                                        <structure>
+                                            <property name="operator">eq</property>
+                                            <expression name="expr" type="javascript">row["state5"]</expression>
+                                            <simple-property-list name="value1">
+                                                <value type="javascript">params["State"].value</value>
+                                            </simple-property-list>
+                                            <property name="updateAggregation">true</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="inheritColumns">true</property>
+                                    <property name="height">120px</property>
+                                    <property name="width">120px</property>
+                                    <list-property name="boundDataColumns">
+                                        <structure>
+                                            <property name="name">categories3</property>
+                                            <expression name="expression" type="javascript">dataSetRow["categories3"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">total delay value3</property>
+                                            <expression name="expression" type="javascript">dataSetRow["total delay value3"]</expression>
+                                            <property name="dataType">integer</property>
+                                        </structure>
+                                        <structure>
+                                            <property name="name">state5</property>
+                                            <text-property name="displayName">state</text-property>
+                                            <expression name="expression" type="javascript">dataSetRow["state5"]</expression>
+                                            <property name="dataType">string</property>
+                                        </structure>
+                                    </list-property>
+                                    <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                                    <property name="linkedDataModel">US delay data</property>
+                                </extended-item>
+                            </cell>
+                        </row>
+                    </grid>
+                </cell>
+            </row>
+            <row id="1989">
+                <cell id="1990">
+                    <table id="829">
+                        <list-property name="userProperties">
+                            <structure>
+                                <property name="name">__ac_group_collapse_level</property>
+                                <property name="type">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="theme">ThemesReportItems31.Table-Modern</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">year1</property>
+                                <text-property name="displayName">year</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["year1"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">US_arr_del15</property>
+                                <text-property name="displayName">US_arr_del15</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["US_arr_del15"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">US_arr_delay</property>
+                                <text-property name="displayName">US_arr_delay</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["US_arr_delay"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">arr_del15</property>
+                                <text-property name="displayName">arr_del15</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["arr_del15"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">arr_delay</property>
+                                <text-property name="displayName">arr_delay</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["arr_delay"]</expression>
+                                <property name="dataType">integer</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state</property>
+                                <text-property name="displayName">state</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["state"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state total delayed flights</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>year</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["arr_del15"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state total dalay min</property>
+                                <property name="dataType">float</property>
+                                <simple-property-list name="aggregateOn">
+                                    <value>year</value>
+                                </simple-property-list>
+                                <property name="aggregateFunction">SUM</property>
+                                <list-property name="arguments">
+                                    <structure>
+                                        <property name="name">Expression</property>
+                                        <expression name="value" type="javascript">row["arr_delay"]</expression>
+                                    </structure>
+                                </list-property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">state average delay length</property>
+                                <expression name="expression" type="javascript">row["state total dalay min"]/row["state total delayed flights"]</expression>
+                                <property name="dataType">decimal</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                            <structure>
+                                <property name="name">national total delay length</property>
+                                <expression name="expression" type="javascript">row["US_arr_delay"]/row["US_arr_del15"]</expression>
+                                <property name="dataType">decimal</property>
+                                <property name="allowExport">true</property>
+                            </structure>
+                        </list-property>
+                        <expression name="bookmark" type="javascript">"average"</expression>
+                        <property name="multiViews">
+                            <multi-views id="902">
+                                <property name="index">0</property>
+                                <property name="views">
+                                    <extended-item extensionName="Chart" id="903">
+                                        <xml-property name="xmlRepresentation"><![CDATA[<ActuateChart version="2.6.1">
+ <ChartWithAxes version="2.6.1" type="Bar Chart" subType="Side-by-side">
+  <block>
+   <children _type="TitleBlock">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <label>
+     <caption value="AVERAGE DELAY LENGTH ">
+      <font size="10.0" bold="true"/>
+      <color _body=",255,184,184,184"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+   </children>
+   <children _type="Plot">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+   </children>
+   <children _type="Legend">
+    <outline>
+     <color _nil="1"/>
+    </outline>
+    <clientArea>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </clientArea>
+    <separator>
+     <color _nil="1"/>
+    </separator>
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+   </children>
+   <bounds _body="0.0,0.0,211.5,130.0"/>
+   <outline visible="false">
+    <color _nil="1"/>
+   </outline>
+  </block>
+  <extendedProperties name="enable.area.alt" value="false"/>
+  <extendedProperties name="enable.drill.category" value="true"/>
+  <extendedProperties name="enable.drill.series" value="true"/>
+  <extendedProperties name="jschart.client.script" value="//initialize variable &#13;&#10;regionName : &#039;&#039;,&#13;&#10;&#13;&#10;beforeGeneration: function(options)&#13;&#10;{&#13;&#10;    //get the variable when it&#039;s render on the browser&#13;&#10;    this.regionName=this.getReportParameter(&quot;Region&quot;);&#13;&#10;    &#13;&#10;    options.title.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;    options.title.margin=20;&#13;&#10;    options.yAxis[0].labels.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;    options.xAxis.labels.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;    options.xAxis.labels.y=20;&#13;&#10;    options.legend.itemStyle.fontFamily =&#039;Raleway&#039;;&#13;&#10;    options.tooltip.style.fontFamily = &#039;Raleway&#039;;&#13;&#10;&#13;&#10;// format tooltip&#13;&#10;    options.tooltip.formatter = function() {&#13;&#10;                return &#039;&lt;b&gt;&#039;+ this.x +&#039;&lt;/b&gt;&lt;br&gt;&#039;&#13;&#10;                + this.series.name +&#039;: &#039; + this.y.toFixed(0)+ &#039; min&#039;;&#13;&#10;    }&#13;&#10;    &#13;&#10;    options.series[0]={&#13;&#10;            color: &#039;#e3dcd8&#039;,&#13;&#10;        }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#ff6300&#039;,&#13;&#10;        }&#13;&#10;    &#13;&#10;},&#13;&#10;&#13;&#10;beforeRendering: function(options, chart)&#13;&#10;{&#13;&#10;&#13;&#10;    if(this.regionName == &quot;Midwest&quot;){&#13;&#10;        options.series[0]={&#13;&#10;            //color: &#039;#e3dcd8&#039;,&#13;&#10;            color: &#039;#f7c5b2&#039;,&#13;&#10;        }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#ea6f3e&#039;,&#13;&#10;        }&#13;&#10;    } else if (this.regionName == &quot;West&quot;) {&#13;&#10;        options.series[0]={&#13;&#10;            //color: &#039;#d9e0e2&#039;,&#13;&#10;            color: &#039;#b7dff3&#039;,&#13;&#10;        }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#4baee2&#039;,&#13;&#10;        } &#13;&#10;    } else if (this.regionName == &quot;Northeast&quot;) {&#13;&#10;        options.series[0]={&#13;&#10;            //color: &#039;#dbe0d8&#039;,&#13;&#10;            color: &#039;#c7e5b0&#039;,&#13;&#10;        }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#74be3a&#039;,&#13;&#10;        } &#13;&#10;    } else if (this.regionName == &quot;South&quot;) {&#13;&#10;        options.series[0]={&#13;&#10;            //color: &#039;#dfdae1&#039;,&#13;&#10;            color: &#039;#e2bfee&#039;,&#13;&#10;        }&#13;&#10;        options.series[1]={&#13;&#10;            color: &#039;#b75ed4&#039;,&#13;&#10;        } &#13;&#10;    }&#13;&#10;    &#13;&#10;},"/>
+  <extendedProperties name="jschart.series.shadow" value="false"/>
+  <sampleData>
+   <baseSampleData dataSetRepresentation="A, B, C"/>
+   <orthogonalSampleData dataSetRepresentation="5,4,12" seriesDefinitionIndex="0"/>
+   <orthogonalSampleData dataSetRepresentation="10.0,8.0,24.0" seriesDefinitionIndex="1"/>
+  </sampleData>
+  <emptyMessage>
+   <caption value="This chart contains no data."/>
+   <background _body=",64,127,127,127"/>
+   <outline>
+    <color _body=",128,127,127,127"/>
+   </outline>
+  </emptyMessage>
+  <axes>
+   <title>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </title>
+   <associatedAxes primaryAxis="true">
+    <title>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </title>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="BarSeries" seriesIdentifier="National">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;national total delay length&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="document.dispatchEvent(new CustomEvent(&#039;getMessage&#039;, {detail: &#039;Click on &#039; + valueSeriesName + &#039; on category &#039; + categoryData + &#039; with value: &#039; + valueData}));"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+     </series>
+    </seriesDefinitions>
+    <seriesDefinitions>
+     <query definition=""/>
+     <series _type="BarSeries" seriesIdentifier="State">
+      <label>
+       <background _nil="1"/>
+       <outline>
+        <color _nil="1"/>
+       </outline>
+      </label>
+      <dataDefinition definition="row[&quot;state average delay length&quot;]">
+       <grouping/>
+      </dataDefinition>
+      <triggers condition="6">
+       <action type="1">
+        <value _type="TooltipValue" text="" delay="200"/>
+       </action>
+      </triggers>
+      <triggers condition="2">
+       <action type="3">
+        <value _type="ScriptValue" script="document.dispatchEvent(new CustomEvent(&#039;getMessage&#039;, {detail: &#039;Click on &#039; + valueSeriesName + &#039; on category &#039; + categoryData + &#039; with value: &#039; + valueData}));"/>
+       </action>
+      </triggers>
+      <curveFitting _nil="1"/>
+     </series>
+    </seriesDefinitions>
+    <lineAttributes visible="false">
+     <color _nil="1"/>
+    </lineAttributes>
+    <label>
+     <caption>
+      <color _body=",255,184,184,184"/>
+     </caption>
+     <background _nil="1"/>
+     <outline>
+      <color _nil="1"/>
+     </outline>
+    </label>
+    <formatSpecifier _type="NumberFormatSpecifier" prefix="" suffix=" min" fractionDigits="0"/>
+    <majorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </majorGrid>
+    <minorGrid>
+     <lineAttributes>
+      <color _nil="1"/>
+     </lineAttributes>
+     <tickAttributes>
+      <color _nil="1"/>
+     </tickAttributes>
+    </minorGrid>
+    <origin>
+     <value _nil="1"/>
+    </origin>
+   </associatedAxes>
+   <seriesDefinitions>
+    <query definition=""/>
+    <series seriesIdentifier="">
+     <label>
+      <background _nil="1"/>
+      <outline>
+       <color _nil="1"/>
+      </outline>
+     </label>
+     <dataDefinition definition="row[&quot;year1&quot;]"/>
+     <curveFitting _nil="1"/>
+    </series>
+    <grouping enabled="true"/>
+   </seriesDefinitions>
+   <lineAttributes visible="false">
+    <color _nil="1"/>
+   </lineAttributes>
+   <label>
+    <caption>
+     <color _body=",255,184,184,184"/>
+    </caption>
+    <background _nil="1"/>
+    <outline>
+     <color _nil="1"/>
+    </outline>
+   </label>
+   <majorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </majorGrid>
+   <minorGrid>
+    <lineAttributes>
+     <color _nil="1"/>
+    </lineAttributes>
+    <tickAttributes>
+     <color _nil="1"/>
+    </tickAttributes>
+   </minorGrid>
+   <origin>
+    <value _nil="1"/>
+   </origin>
+  </axes>
+  <rotation>
+   <angles/>
+  </rotation>
+ </ChartWithAxes>
+</ActuateChart>
+]]></xml-property>
+                                        <property name="outputFormat">JS</property>
+                                        <property name="inheritColumns">false</property>
+                                        <property name="height">250px</property>
+                                        <property name="width">575px</property>
+                                        <property name="theme">ThemesReportItems31.Chart-Modern</property>
+                                    </extended-item>
+                                </property>
+                            </multi-views>
+                        </property>
+                        <property name="linkedDataModel">US delay data</property>
+                        <list-property name="filter">
+                            <structure>
+                                <property name="operator">eq</property>
+                                <expression name="expr" type="javascript">row["state"]</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">params["State"].value</value>
+                                </simple-property-list>
+                                <property name="updateAggregation">true</property>
+                            </structure>
+                            <structure>
+                                <property name="operator">in</property>
+                                <expression name="expr" type="javascript">row["year1"]</expression>
+                                <simple-property-list name="value1">
+                                    <value type="javascript">"2003"</value>
+                                    <value type="javascript">"2008"</value>
+                                    <value type="javascript">"2014"</value>
+                                </simple-property-list>
+                                <property name="updateAggregation">true</property>
+                            </structure>
+                        </list-property>
+                        <column id="848"/>
+                        <column id="854"/>
+                        <column id="858"/>
+                        <column id="891"/>
+                        <column id="849"/>
+                        <column id="850"/>
+                        <column id="895"/>
+                        <header>
+                            <row id="863">
+                                <cell id="864"/>
+                                <cell id="865">
+                                    <property name="colSpan">3</property>
+                                    <property name="rowSpan">1</property>
+                                    <data id="870">
+                                        <property name="resultSetColumn">state</property>
+                                    </data>
+                                </cell>
+                                <cell id="867">
+                                    <property name="colSpan">3</property>
+                                    <property name="rowSpan">1</property>
+                                    <label id="901">
+                                        <text-property name="text">National</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                            <row id="830">
+                                <cell id="831">
+                                    <label id="832">
+                                        <text-property name="text">year</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="851">
+                                    <label id="859">
+                                        <text-property name="text">NUmber of Delayed FLights</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="855">
+                                    <label id="861">
+                                        <text-property name="text">Total Delayed Min</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="889">
+                                    <label id="899">
+                                        <text-property name="text">Average Delayed length</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="833">
+                                    <label id="834">
+                                        <text-property name="text">Number of Delayed Flights</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="835">
+                                    <label id="836">
+                                        <text-property name="text">Total Delayed min</text-property>
+                                    </label>
+                                </cell>
+                                <cell id="893">
+                                    <label id="900">
+                                        <text-property name="text">Average Delayed Length</text-property>
+                                    </label>
+                                </cell>
+                            </row>
+                        </header>
+                        <group id="871">
+                            <property name="groupName">year</property>
+                            <expression name="keyExpr" type="javascript">row["year1"]</expression>
+                            <structure name="toc">
+                                <expression name="expressionValue" type="javascript">row["year1"]</expression>
+                            </structure>
+                            <property name="hideDetail">false</property>
+                            <header>
+                                <row id="872">
+                                    <cell id="873">
+                                        <data id="884">
+                                            <property name="resultSetColumn">year1</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="874">
+                                        <data id="886">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">state total delayed flights</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="875">
+                                        <data id="887">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">state total dalay min</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="890">
+                                        <data id="897">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###.##</property>
+                                            </structure>
+                                            <property name="resultSetColumn">state average delay length</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="876">
+                                        <data id="841">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">US_arr_del15</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="877">
+                                        <data id="843">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###</property>
+                                            </structure>
+                                            <property name="resultSetColumn">US_arr_delay</property>
+                                        </data>
+                                    </cell>
+                                    <cell id="894">
+                                        <data id="898">
+                                            <structure name="numberFormat">
+                                                <property name="category">Custom</property>
+                                                <property name="pattern">#,###.##</property>
+                                            </structure>
+                                            <property name="resultSetColumn">national total delay length</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </header>
+                        </group>
+                    </table>
+                </cell>
+            </row>
+        </grid>
+    </body>
+    <list-property name="images">
+        <structure>
+            <property name="name">airplanes.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAAC0AAAAqCAYAAAAnH9IiAAAGBklEQVRYCe2Ya0xcVRDHWVgeBQRroI2t
+                EVTUpMaoxUYxpJRa1kJd7D6wKkZJS1L7hX6wH/yoicYYv7SNGlvxgy1SHvvisWI2NW5ofbXxEWuisWlr
+                rS2pQFWgPFxg/c3NXXJhd3ntXWITTjKZOXPmzPzP3LnnnHsTEuLc7Ha7qby8PFXPMAY9nWl9VVVVZdPv
+                hIqha8Fg8GODwfBBa2vrGa3dXLLVas1j3lPQGmwvDAwMNBjnmrTIccPExMRdiYmJKycnJ4uTkpIu4Wcn
+                wD9hMT3I9WNjY8fa29sHI/nHpgC9XaU85jmQLwD8/ezs7B1xy7SAIUsbAd5K0BKn0/kLqkQAmeC10Bb0
+                ToDUk/2v0K9DZ0dnQ7daxliwgwV3Mz7B+ArGh9G/FVfQBEmgpl8AxKvj4+Mb3G53v+ikASIXVgPVAiQA
+                l3JyYOsE5BfIQUjsCmGS9Vegw4zt1gW0zWZ7iYx+hMMRHIc1gL8BmBIGNmPz70wDnsijLpfra1VvoP8I
+                /kLlIfayGA9zT4lNzDUtmSBTe6DXAHcA5+/i/B8VgMIYk5osYOxN+MvaMZEpgdPM3YRox8YG75M5yGZ8
+                naE/rcUMGm+5OL8NbiJQHfwiAJrQHUR+DqpCL3GaoNchpRUWFibn5+eXkVEr49uxPwf3UMcbqf+zIbtI
+                XI/yMFAe1QQ/QIBvCVwKAFjwCrwFEMcA8b0EN5lMGVlZWU8gSka3YvMTsisQCDjb2tpkh5lX0wO0Eojs
+                VgOkQY3aCHez7f3Bo7+O/CAkGX0cfhI7j4zz6HvhC266gZbI1HcRmd0AqAK6a+G3wtOhywBupN85s94Z
+                W27/2wwkLQQZ+2dpenr65Z6ensmFzNPbdl41Ta0qpxXB5ej9E34E/qF6NOuGiThJvBN57ETB0dHRqx0d
+                HcORnM8JGkeZTPTj7AggD9KXl2wXVAPw8wJ+cHCw2efzyS6x4GY2m9PT0tIq8GPlRRWuHPXIK9l9KjQn
+                5ZTvOUGLJUDXwr7BYZ3D4XCpOslKBc53QZvQOQhSHymI2Gsb/rKZa5aDBX0Zfr+Eu0ZGRlq8Xu9fYovN
+                HbDz7DZhGMMUMiFS4wB5iCA+dfWntTaVlZWrU1JSXkRXywLG4fXQUe0+TEZzUlNTt6MXoMXYfQ5wF/7a
+                PB7P3+i0zQDoSyzmR5JUoR0Qed6gxZgD5EnYYYIVkdGLopvZCFZMMAEvAI8je+Fy01uP/ClcnpSXBQ3N
+                nCt95stdphvx976+vvv9fr8kYVpbEGiZScbryPjuoaGhoq6uroFp3jQdsn8TmX0WVRl0tLe31weAUY1J
+                SDSQjGI6UtNyWRojKe/x/uxHVq6nIcMQV0AD5OHh4eFfZwMRmiCcIO/A7iYT2yJlQmsbSSab8j6UCkhI
+                nshVyIUOrM6fkWfdUo1yiSFzLZmZmTfj7BCfQfv5DBInURuB9vIIj+fk5Mj9dn1UQ82AfNxmZGRsRWWB
+                tuHjHOTkslRETf+mMZ1TlEcjd4J7eSGsXG72AeZ5ZjXB32bV57UeLBbLPUajsQrdDugWbHYy1099hl3s
+                ZZ5aImZEC7ZbsP0O2U1iXCTmitgsphlkn6T2mpncz5tao77lewmwD90JMrEnOTn5GYI+jW4VOrFtBqh8
+                aYTVHAtbxZOTr2cL9Bg23cx1I7cx5xr9mJtS05TFCjz5oVME6CeAZDsHCtAP0HfCW1jUSXRhQJl/O/Vo
+                A6zU5wPYdkFuDh3vYg8d/ERtU7sHgVOw8kEl0ARBDwGkma3tBP1IQNdhI2+71KgcPu2QiwV+Fq1cGNel
+                TYEWbypwOe+VbzxAnQVED1zqT/h1snkfsizMSF8+j9zRFoZNXNo00NoILCAXQHcCWi7zaxjLBWQGslzq
+                5VP+B639srycgRslAxw+uv+qjXXts72I8rXSCcllRtdftbHu3cYoq47rr1pibo4Sd17qqJmW2fH6VcvJ
+                Kn9AF91mBS1eqWndf9UuGq06UQHNfXpJf9XGCtrIybfkv2pjBo2DJf9VGytoKY8l/1WrB2jFBy9cNZeh
+                BtVhIzxuv2p1Ay2OqO8b4lftf6rGpt0S2I+RAAAAAElFTkSuQmCC
+</property>
+        </structure>
+        <structure>
+            <property name="name">thumbsdown.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAACUAAAApCAYAAACyXOB4AAAFPUlEQVRYCc2Ya2yTZRTH166225hxF2/D
+                gFPjgmZBdA7USZwojcuye6tf9sWYaUij0U+ozBjFROblw2LCF/ADmhDNLp112eJALATRReeFQSZoBmEY
+                0RGS1W66dV39nde+L+3L+zYF2q5Pcnqe5znnOef/nud2nlpyEpS2trbbLRbLXmg/ar9DwXA4fDY3N3dq
+                enr6rN/v/zfB8CsWWcxGut3uTci+jEQi/fBT0AqoAIC30rcKXkb7HPWj8KO0R+fn5w/5fL6/aScs2H5i
+                aWnp/Nzc3Pjw8PC8XtkQVF1dnaOwsPA4Az19fX1f6Aep7ZaWlgqbzbYWYJWA2gh/AH4c+eDi4uInXq/3
+                pKqrcgBtob4T3V/QXQkfgnf19PT8pOoYgmLaOqxWayuKdapiMhyHdvTWQy7oKehP6B3Ii61/4EpBbxtg
+                biSy2x0ORzudr0DP9Pb2DoqCISiXy3UM9B4MHRSlKywWnD/K2NehW4i6m6j/GLUlsiGA+QHSRRA2EIRv
+                Wa/r+/v7v7PqHba2tsoUOK4SkJiNYOMA9AjOX8TpD0z3PVF/EUBuxc9z0gbsKKwJnd1VVVXXXAIKQQdG
+                dkUHp4TJtGDzSdafrBvFJ0Bkg9zsdDplA+UA3gfIgvLy8kqbdKhFUCJoYZGuUftSxWW3cZQcwt5SjM1z
+                bKjrac9KH8C/Jyh3xUUKlJsQTLBr/ooZmLIqtmMBid1cnfFT6KyKAyVRQsmrU8xYE/8hnOXFTR+dTaFQ
+                6MGMoTBxpEWKbbkWneDAwMBpE92MdWugWGCPM59yxy170UCBZDO0b9kRAUABVVtbayNKNbOzs9kTqdLS
+                0nUs8tPc2IGsiRTrqYZIfZ0NgASDMn0AeohIHckqUACqBtA32QLKVl9fX0ykirk0f1tuUOCQVCpszc/P
+                l6zx2HIDEv/gKAfYlJVKBe0T6QbFZlrEh2SmWgHACjIHLaenXQGdkfPpXrSmNM30VZ7GtCRzSiHzvIGK
+                bLQZ6ZAEkADdRObpt5Ln7KGvE6XbRJiOgu03cPhYIBB4TbVPMDyQj+QujDyfiH2G7C1IWVg5XMbthLcb
+                pVEGf47gIHRCBsCvqpDvd2Jz+8zMTOHIyIiSzAHiYYz2kExW4rcEOonv3Wy2DnFmUT2iWILASduJkRr4
+                atoTcFlv4wsLCx/yppPXSVKlsbHxWrvdvgVbbQyQl5E8ZmWaKkmLx6n6sC9regO8C0Dvi1yKBur/5sVf
+                CSlTK2nxGgZWQy9RL8C49lS6qB1fk8cH07GX3gPBYNAT++Bsbm4uAtSnyH6FDmN3EJvBWAumoGKVmIIh
+                2uN8zdbYfn2dD5H09mW+/AX4s+jLOrnsEpd5Go1mvXn4mmJkrxrJ1T4A3Q2YPbQvEOF17KI/VNnl8oSR
+                AtCdLEK5qO8nxGdMjFuI5DZkzwOqk6fTLhO9pLsTRooIdWPpXTNA0cUs68OO7n1Ml7KYk/ZuomgKiunY
+                zJevBtB7RmMbGhoK+B8ggI5sZXnp6p9PRsOS6lNSFyNNnHno/wCK6OVEaGVeXp68cL8CkJwtKQMkvgwj
+                xZYuYzo2IpczJq4Qwevo2AfobgAJ6JQXw0gBSJ5bPzN1+hNdNsZH0OF0AZIvNIwUoKqJxCVJH7vsTcaU
+                TE5OumRwuophpHA2DcktrhUAuQHbTkfT2NhYSBOkoWIGSrZ2mepPDkYA7eQCbWZKL6j96eKGhycgSnA4
+                CYg7uKdk9x3hlH6bg1FO7LQXw0hFo/ExgM6ztiaggUwBki/W/z+kRYHcfX9RUZEbQDsAtEMTZKDyH1qy
+                K9vuDeYJAAAAAElFTkSuQmCC
+</property>
+        </structure>
+        <structure>
+            <property name="name">clock.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAKEElEQVRoBcWaC2zV1R3Hubct5VGLlb4z
+                By1sZJBNFAYsOEbQKB3eUvqYgERQ59zQuOjmhGXYhZfOR4yIw7jFDQMuSF+UYBlz2j0MW7aiMxPYgpNu
+                UlaaAkW0toV2n+9///PP+V//vb29FDjJ6e+c3/m9z++c/znnNjRsCEtFRcXI7u7uzOHDh+f19fXlIToX
+                GKIcV2XseEdHR1tjY+MnQ6U2dIGCQmVlZQUYV6yKsTOBp4COwcAW+tLhOERTMIP+ftq7gfU7d+48Cuyj
+                JlQScmDatGkp48eP/1Y4HL4XrVdh1G5qfXt7ewPRPRfLkrlz5yZnZmYuwIEIPBFge29v7yZ4fz4Qb5Dc
+                QTkg5WPHjq3A8A0I+wf1R0TwADDRCIZKS0unJyUlSV4hjvwQR2oG40jcDpAq12L4VhR1Un+A4b8DDllh
+                /cxD2OPUJBxZXl1d/U48wuNyoLy8vAJhW5juuzG8tj/BixYt+kJycvINpEYONPnQ59AOA1uAqq0E4TVk
+                aPYCC46UQ/f8QLoM84AOYPxahC0nKpGgqJAC15ECi1FagtCR1HroW12DWzA4BK+ccRxifCH1Q8Z3nT9/
+                /uXa2tq/0fcVzTb09SBfqKqqWucbjOrEdADjNyLoJniKiFqbzUukCuivp16PMVsxsq6mpkbrYcCCgdOR
+                u5B6B8Sv48gaeJttxuLi4pzU1NT/gtuB7sX2mN3u1wEMfBTCVdRUBHQbJvBJGPwkym8H9wz1Cca1LgZd
+                IpHIqBEjRjwM433IfBGZq5B13ghi0xiRlZW1n76220qDt2GgA0RoCVO/8dy5c9OZ4nbDUFJSciU5XkW/
+                A2XfRqhvVgzdYKEb7Z/BN5x6K3I7jAwClkW7ifogeOn2lU854E7vXiLyNXL+XUONoDG0T4N/ibxcQTvm
+                1omcKTiphT8BngPAEgzwomvkWjBMyj4N3fyenp6ZdXV1p80Ym8M1rLPfMnYjMt42eMGw3cHIkUT+VxAu
+                izL+KujexpDvY/xy2jGNV9SQ83fod0A7D3k0+7baugLavcj+LnS/TElJOVVUVJRuaLTQwd9B/2XwqQYv
+                6HOAhbgM3L/xcq8h0seLdg0CdqDgKYOPBSUH+m0E4Tlkacssx4mIcjoWn8bQ8Si8r6SlpVUTiCRDjywd
+                PU6OHj36VoMT9Bxwo1/JjqCF6xU++8/SeR3Bqz3kAA2M1Yz905DhhDaBroyMDC+qZiwIomsJTnxEfTJq
+                /CFkr7dnwXMA4vsh3s929hfDpA8TDGXk5CZwMdPG8AwR7EXvndTbCexEI5NAaEd6a9SoUSsNznFAaQLx
+                /Rjqiz47zmMQPmYvKMN4sSHGnkTHE1Rt514hPR9mfT1g0stxgAPaVGbgDIa+Zyj5ws6m/UXqZoO71PDs
+                2bNPo3Mmxs4wulkLh7G1B0emCOc4gEc61mqReAWcdpvNbv56+EvZaGho6MJYBXBFlF4dV4qFM2tAHZ09
+                TBFeZ5Zag7hckE2lDid0zvKKgk2NCBHmK5gPzCPSbxoKPiizIGgF977BXS7IN0C7WQcp/WVjA3Y10p5I
+                amWFOTDpmtcCwttlMP5mcHWG4XJD7KkjpW+27Oil3cI6yAtjaB4Ex63BYeByonH2+KVuY6ju2Lpj2EU2
+                /98BGj4HIM53Z8VmuGxtoq/LkFLdLjpq5zIWVgr5HGAgH6+VVomWMYkyBvEpmAqqPSabZXsyDZ11uuxB
+                2vqwReOiSAK7IRaWzveL29rafAoDqeNEyhbXTo8D3CfgUmTocRrXeCM06OsqeDXNd2x8rDaXk0wuJ9vg
+                vYIHrKn2y4KeYcBn8GX/OJaM/sbIhquxx5cRyPsM9PvD7gLJs5lxSis87ggS9esxXuf0t+CdU19fbysL
+                FRQUbALfyninrSfeNrxBa9LZfJQ+zmq2heFdK0zRq94m8drsz+OgfxX6b7A/e8dwEWhW2Ka3M3YFKTWe
+                WYl1ofFkRjdki2yy8eDy+MhpHYRPMOAzFuLfgyuyGYLaRH4pN6X3oJ8RbbyZFRQdgPerdkoFyRoAV4Qc
+                2eQVdMrmE2H3a9uja5sZxak3YJgCLtvggiBCiqh364BljWshrwJfDe6byF9NTSjykumeFCYyg54D+ipj
+                32mO/h/ozKNFW08kncOR+ijsBuy1ccIHFF3qFxs8hqdRG5Cnw+F1yPGllKEbDCQFFyJvjz2DBFjvqs7h
+                03GABesdjoxwCF7BiLtMPwh2dnaug+Ymzk4vYPiD0BykOgsZ448F8QwSp0eHu2SLzYfOYmx2Dp+OA83N
+                zX+EYIKeNwwh17oa2mEMW2pw0XDPnj2nwF1J/Q91Iopuw/ALShlbB4FZgcyP3fuwM0T6aPvMJzv+JIR2
+                oWFNTU09bHVb+WFiDd37hHPL94DbcaLKTSuD9yB4veGs8xBD1HAfANYSab3LeoX0eQSnXiTAzrpyZkCj
+                bEkbmJolvOcUGmqM0xFbzyOVBnepII8JSs+/slD/bHSyqXyedikPbrrqOsVzQC9wGKqHpfVmEKgj9lJw
+                5W6OW0MXr0nqrETn17u6uvR86R3z+ZJvpP+4fUf3HJA5MOkJZS7GTlVfxU2RBTSfQvAtDvIi/iEDSrDj
+                x6i4hS/6h0aVXgxpzzpz5sxzBifoc0DGMgsrqbtxItcQgj9C+3MIfgkn9EJ2UQqyV5PjteT9LHS+b5To
+                W4Bu7Tr37Nu37yODF0yyO2ofOnTo8OTJk9NgWDNu3LhtR44ccRbLwYMHT06aNKmW1f8841nZ2dl/OHr0
+                qG5GF1x02Js9e7ae8vVNmcEC9YzXYk5PT/8NeC3cX0Qr882AGYRQu8oHPO/53jN1P+XtSF/BWTx7v0vE
+                Sg1PohAZFYWFhYfg/xLPKDqSeMZLJno6yYjD2PSTIB36UAQWeQ6zDlDpVN9vBPT1knwjjug3LW2jP2XB
+                vWrnLLh+ix5ueV1bQLrcC9FI6kMY/gawzzDp+ZAAbqc/hzGlc+Bs9+uAK0gfsioikMM2u4gZ0MHPLvqd
+                +DYMWQJyDvVNfdXpOz8x0T5GyoXh1Ycnj34OYwuh+woyG4HbiewOoGc47WHu+tsFTTNBWoYDOtoEloEc
+                EFOIaFci6E7a8xGm48KnCkrTQM5H6Q3AbOh1n8ilT9P5kU8Xczn2GjvJr6MXoxGIHL0GNlC3oGuDwfcH
+                43HA4SXSZURvCwbsJpKVOgn2JzQRPIZ/Ftn6QVFBuIeZ2RWPnLgdkDD3gvIASr6DEv2mtY4oeT8HxaMw
+                mgbDxyBLM6xzz2bS7Rl9VKPp+usPygEjBKVaVI9QddBrQrHzrwYcuv5laGJBfmubwJpw/r8Cw6+FfxuG
+                rw1YY7HEOGMJOWCk4ojyfh4G6PwfoX2Ctq6oynfBY6Qbmec83ejerXusYJacBuqRtpFZPEs7oXJBDkRp
+                1I40FWN1f3WMZTwXA/UDmecUDrUyU3oA8O08UbLi7v4PapXPa6LPkpYAAAAASUVORK5CYII=
+</property>
+        </structure>
+        <structure>
+            <property name="name">thumbsdown1.png</property>
+            <property name="type">image/png</property>
+            <property name="data">
+                iVBORw0KGgoAAAANSUhEUgAAACYAAAAnCAYAAABjYToLAAAEe0lEQVRYCcWYWUhUYRTHuzenSbLVkTDJ
+                bLMgC8seijAt2nwx0ZEeClp8iB4qgihaKYgg6qWgXnoJSgxcMoXMorJ6KAoroqKFbLONRtrGccZpZvqd
+                qZHxOlfvjFP3wMf5zvnOd85/zredO8qAPig/P39wcnJyHmYpiqLY4EMDgcB7VVU/0H/vdrs/1tfXO/pw
+                E/WwojfDbrevBMgaxucC5Db8E7IA+E5LRzcGnoZuNPwb7ao0gF6JB9BIwNTS0tLTBJlO2+3xeK7V1dX9
+                pK9L2Ivtwr8tF/6Gdtnv919yuVw3GxoaPMh9Uk5OjqW5udkrhj2AEeQB+re0FZWVlR1iFCWpZHsOcxbT
+                lpDRmXAnGX5DXwCvwa8TPgC7w7Bi9BZ4gJbOj5lVXV19vxuwEoi9s4eJ2RjFi9TCwsIUq9U6DofnCLyP
+                wCdJwH7kvV6vd5LFYvF2dnYG4PMBeQZ9akJ4dEBNRr4UrotD389W+Iyfz2ToQpi/6WRxVW1t7cswXTmA
+                N/h8vkw1TCnd2bRYlk/jxpAoyzkwgmWABAW6gIFUlq+EVFdEMP7vquBSyl1FWmuJvor1f/rfUUQIGMyY
+                zWaTU/SpqqqqPIKNKarQUo4n+mNTEOgEDQH7wjHN0LExRR0EBqibRJ9QXFy8wBQUEYKq8gygv8jmP15T
+                U3Mtgo0pKjUjIyMTUMls/COmINAJKkspj+51nXHT1Fyy6mv2WKZpCHQCq9RPNxgbzju2VsfGFLVKUedi
+                j70jeqIpCHSCJvBGSpGXRSvSsflXah9bSG4ELaWj8CWQrRl07nAqfVqLeMsAUYgXdAtvRKwgMVJldCD7
+                kZfST3c4HPfkEZca7DntnxFFQgLvsZ0AZQA4IYFIxFlAya2wmeb4gznggqc2NTW5FW77eZzMBirIyX8L
+                OpkXNyooKLAmJSVVA8hGSbWRS/yuEeeKGFFRbwHcdrq3cPAA1B64FVkOhPAh6AbDJeVfCdBo8JWQ+v8F
+                c+9TrkvGDFMQmFiT1imwbAJPhQ/C2S94ByBcgHajb0dOQm+DH6AtIdhluC7hs5JBO3ZdcXSNNQNdNT+T
+                nzEmrU8iCyUA/dGbITZHsRnd3t4umY6auoAZncmeGUbWJrInn+jNIVOtjKXxBTTS6Del1lfUwNjIu8nE
+                Kb2PYDJ1jCCOlpaW8aGPV21QI3JUwMjEcJyWkS25lHsQoLaizHM6nbn9ASWOowLGQVjHMjaSLflDpRsB
+                ahtjh1AOZfmc3QZjEKIBpnA6NwFuuTYOmSxEt5kP1bFcI/0GJf6DpbU2UCSZ4MPQp/B591AzLj52AHg1
+                oFo1YzGLhoGRjSw2/SNtJACnopvS1tbWpB3rj2wYGMtoYw/JfxDdiEyVoDjP+yYXctzIMDCyJffWNG1k
+                wC5Dd06r769sGBgZayFYIku3MDwowLLIWo8lDreJpW8YGE+W1Gu7aPJXUbDaLSoqGoE8igPxKpbgvc2J
+                +nHlvjpIlhaxtPVwmb8e0Gm9BYllzHDGQs4p8HaydPLsyPWxn/6m0Fg8+W/qH8QBnzCD8QAAAABJRU5E
+                rkJggg==
+</property>
+        </structure>
+    </list-property>
+</report>
