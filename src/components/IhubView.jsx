@@ -29,6 +29,7 @@ import {
   Stack
 } from '@mui/material';
 import ReportList from './ReportList';
+import ExportReport from './ExportReport';
 
  
 
@@ -44,6 +45,8 @@ export default function IhubView(props) {
   const [paramList, setParamList] = useState([]); //for the list of values
   const [interactivity, setInteractivity] = useState(false);
   const [enableToolbar, setEnableToolbar] = useState(true);
+
+  const [showExport, setShowExport] = useState(false);
 
   const [showSelect, setShowSelect] = useState(false);
 
@@ -165,7 +168,25 @@ export default function IhubView(props) {
 		
   }
 
+  const createParameterArray = () => {
+    //create parameters from input array
+    
+    var parameterValues=[];
+    for(let i=0; i<parameters.length; i++) {
+      var param={};
+      param.name = parameters[i].name;
+      if(paramValues[i]!==null) {
+          param.value = paramValues[i];
+      } else {
+        param.value = null;
+      }
+      parameterValues.push(param);
+      }
+    return parameterValues;
+  }
+
   const downloadReport = () => {
+    //downloads the report using the viewer
     let viewer1 = window.actuate.getViewer('ihub-report-content');
     
     if (!viewer1) {
@@ -176,6 +197,7 @@ export default function IhubView(props) {
     //setRepWidth(viewer1.getClientWidth());
     
 		viewer1.downloadReport('pdf', '', null);
+    //viewer1.showDownloadReportDialog();
     
 		
   }
@@ -347,6 +369,7 @@ export default function IhubView(props) {
         
   }
 
+  //if you use this, it will say that session expired...
   const actuateRefresh = () => {
     window.actuate.logout(`${process.env.REACT_APP_IHUB_URL}/iportal`, null, null, null);
     window.actuate.load('viewer');
@@ -513,7 +536,7 @@ export default function IhubView(props) {
                     <Stack direction={'row-reverse'} >
                       <IconButton
                         aria-label="download"
-                        onClick={() => {actuateRefresh()}}
+                        onClick={() => {setShowExport(true)}}
                         disabled={false}
                       >
                         <CloudDownloadIcon/>
@@ -575,6 +598,19 @@ export default function IhubView(props) {
                       Select
                   </Button>
                   <Button onClick={() => { setShowSelect(false) }} variant="contained" color="primary">
+                      Close
+                  </Button>
+              </DialogActions> 
+          </Dialog>
+          <Dialog
+              open={showExport} onClose={() => {setShowExport(false)}} maxWidth={'xl'} fullWidth>
+              <DialogTitle>Select a report definition</DialogTitle>
+              <DialogContent>
+                <ExportReport runRequest={runRequest} token={token} reportId={repId} paramValues={createParameterArray()} outExportDone={()=>{}} />
+              </DialogContent>
+              <DialogActions>
+                  
+                  <Button onClick={() => { setShowExport(false) }} variant="contained" color="primary">
                       Close
                   </Button>
               </DialogActions> 
